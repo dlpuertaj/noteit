@@ -20,9 +20,10 @@ Anyone who needs to capture notes on any subject. No assumed technical skill lev
 
 ## 3. Core Principles
 
-- **Simplicity over features.** Three features only: write, organize, search.
+- **Simplicity over features.** Four features only: write, organize, search, export.
 - **The writing surface is the app.** The note editor occupies the full screen.
 - **No friction at startup.** No login, no onboarding, no permissions dialogs beyond storage.
+- **Auto-save.** Notes are saved automatically as the user types. No manual save action required.
 - **Calm UI.** No loud colors, no cluttered toolbars, no decorative chrome.
 
 ---
@@ -36,6 +37,7 @@ Anyone who needs to capture notes on any subject. No assumed technical skill lev
 | Local storage | All data stored on-device using a local database. |
 | No authentication | No user registration, no login, no accounts. |
 | No external services | No analytics, no crash reporting, no ads. |
+| Max folder depth | Configurable by the user in Settings. Default is 2 levels (Root → Folder → Subfolder). The UI must prevent creating folders beyond the configured limit. |
 
 ---
 
@@ -44,8 +46,9 @@ Anyone who needs to capture notes on any subject. No assumed technical skill lev
 The app is considered MVP-complete when a user can:
 
 1. **Write notes** — Create, edit, and delete a note. The editor is full-screen.
-2. **Organize notes in folders** — Create, rename, and delete folders. Folders can be nested (folders inside folders). Notes can be moved into any folder.
+2. **Organize notes in folders** — Create, rename, and delete folders. Folders can be nested up to **2 levels deep** (Root → Folder → Subfolder). Notes can be moved into any folder. Two system folders exist at root level and cannot be deleted or renamed: **Inbox** (notes created without a folder selection) and **Stash** (notes rescued from deleted folders or deleted permanently at the user's choice).
 3. **Search notes by title** — A search finds notes whose title matches the query. Search is not required to scan note body content.
+4. **Export a note** — The user can share, print, or download the current note.
 
 Everything outside this list is explicitly **post-MVP**.
 
@@ -56,7 +59,6 @@ Everything outside this list is explicitly **post-MVP**.
 - Note body search
 - Tags or labels
 - Markdown rendering
-- Note export (PDF, text, etc.)
 - Themes or color customization
 - Pinning or starring notes
 - Sort order preferences
@@ -72,8 +74,9 @@ The MVP is complete when:
 - That note survives the app being closed and reopened.
 - The user can create a folder hierarchy (at least 2 levels deep) and place notes inside.
 - Deleting a note removes it permanently.
-- Deleting a folder moves all notes inside it (including notes in nested subfolders) to a root "Unfiled" area, then removes the folder.
+- Deleting a folder that contains notes (including in nested subfolders) prompts the user: "This folder contains X notes. What do you want to do with them?" with two options: **Move to Stash** or **Delete permanently**. If the folder is empty, it is removed immediately without a prompt.
 - Searching by title returns the correct notes.
+- The user can share, print, or download a note from the export screen.
 - The app functions entirely without an internet connection.
 
 ---
@@ -113,4 +116,4 @@ Rules that govern how the AI agent (Claude) must behave throughout this project.
 The Constitution defines **what** and **why**. It does not decide:
 
 - Exact UI layout details (decided in Specification)
-- Exact UI layout details (decided in Specification)
+- Export format details, e.g. PDF vs plain text (decided in Specification)
