@@ -1,0 +1,116 @@
+# Constitution — Notes App
+
+**Version:** 1.0  
+**Date:** 2026-04-20  
+**Status:** Signed off
+
+---
+
+## 1. Purpose
+
+A minimal, distraction-free notes app for Android. The app exists to let anyone write, organize, and find notes quickly — with no setup, no account, and no internet required.
+
+---
+
+## 2. Target Users
+
+Anyone who needs to capture notes on any subject. No assumed technical skill level. No assumed use case.
+
+---
+
+## 3. Core Principles
+
+- **Simplicity over features.** Three features only: write, organize, search.
+- **The writing surface is the app.** The note editor occupies the full screen.
+- **No friction at startup.** No login, no onboarding, no permissions dialogs beyond storage.
+- **Calm UI.** No loud colors, no cluttered toolbars, no decorative chrome.
+
+---
+
+## 4. Non-Negotiable Constraints
+
+| Constraint | Detail |
+|---|---|
+| Platform | Android (primary). Flutter codebase allows other platforms later. |
+| Offline-only | No network calls. No sync. No cloud. Ever. |
+| Local storage | All data stored on-device using a local database. |
+| No authentication | No user registration, no login, no accounts. |
+| No external services | No analytics, no crash reporting, no ads. |
+
+---
+
+## 5. MVP Feature Scope
+
+The app is considered MVP-complete when a user can:
+
+1. **Write notes** — Create, edit, and delete a note. The editor is full-screen.
+2. **Organize notes in folders** — Create, rename, and delete folders. Folders can be nested (folders inside folders). Notes can be moved into any folder.
+3. **Search notes by title** — A search finds notes whose title matches the query. Search is not required to scan note body content.
+
+Everything outside this list is explicitly **post-MVP**.
+
+---
+
+## 6. Post-MVP (Out of Scope for Now)
+
+- Note body search
+- Tags or labels
+- Markdown rendering
+- Note export (PDF, text, etc.)
+- Themes or color customization
+- Pinning or starring notes
+- Sort order preferences
+- Undo/redo history
+
+---
+
+## 7. Success Criteria
+
+The MVP is complete when:
+
+- A user can open the app cold and immediately start writing a note.
+- That note survives the app being closed and reopened.
+- The user can create a folder hierarchy (at least 2 levels deep) and place notes inside.
+- Deleting a note removes it permanently.
+- Deleting a folder moves all notes inside it (including notes in nested subfolders) to a root "Unfiled" area, then removes the folder.
+- Searching by title returns the correct notes.
+- The app functions entirely without an internet connection.
+
+---
+
+## 8. Tech Stack
+
+| Concern | Choice |
+|---|---|
+| Language | Dart |
+| Framework | Flutter |
+| State management | Riverpod |
+| Local storage | Isar |
+| Navigation | Go Router |
+
+---
+
+## 9. Agent 3-Tier Boundary
+
+Rules that govern how the AI agent (Claude) must behave throughout this project.
+
+### Always Do
+- Apply clean code principles at all times (meaningful names, single responsibility, DRY, small functions).
+
+### Ask First
+- Before running any shell command or script.
+- Before editing the database schema or data.
+- Before executing any git command (commit, push, pull, merge, rebase, etc.).
+
+### Never Do
+- Never store passwords, API keys, tokens, or any sensitive credentials in code.
+- Never commit sensitive information to version control.
+
+---
+
+## 10. What This Constitution Does Not Decide
+
+The Constitution defines **what** and **why**. It does not decide:
+
+- Exact UI layout details (decided in Specification)
+- Exact UI layout details (decided in Specification)
