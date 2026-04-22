@@ -88,7 +88,7 @@ The MVP is complete when:
 | Language | Dart |
 | Framework | Flutter |
 | State management | Riverpod |
-| Local storage | Isar |
+| Local storage | sqflite (SQLite) |
 | Navigation | Go Router |
 
 ---
@@ -99,6 +99,7 @@ Rules that govern how the AI agent (Claude) must behave throughout this project.
 
 ### Always Do
 - Apply clean code principles at all times (meaningful names, single responsibility, DRY, small functions).
+- Always verify dependency versions against pub.dev before adding or updating them in the plan. Never assume a version — always look it up.
 
 ### Ask First
 - Before running any shell command or script.
@@ -108,6 +109,8 @@ Rules that govern how the AI agent (Claude) must behave throughout this project.
 ### Never Do
 - Never store passwords, API keys, tokens, or any sensitive credentials in code.
 - Never commit sensitive information to version control.
+- Never begin implementation of any phase until all tasks for **all phases** are fully written in `tasks.md` and approved by the user.
+- Never blur the boundary between the Tasks phase and the Implementation phase — writing tasks and executing tasks are two separate steps.
 
 ---
 
