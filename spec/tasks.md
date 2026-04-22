@@ -26,7 +26,7 @@
 - [x] **T-007** Add `uuid` to dependencies in `pubspec.yaml`
 - [x] **T-008** Add `mocktail` to dev_dependencies in `pubspec.yaml`
 - [ ] **T-010** Verify latest `sqflite_common_ffi` version on pub.dev and add it to `dev_dependencies` in `pubspec.yaml`. Required to run sqflite tests without a device.
-- [x] **T-011** Run `flutter pub get` to install all dependencies
+- [ ] **T-011** Run `flutter pub get` to install all dependencies
 
 ### 1.2 Create folder structure
 
