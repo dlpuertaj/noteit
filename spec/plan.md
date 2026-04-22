@@ -35,13 +35,11 @@ lib/
   data/
     app_database.dart
     notes/
-      note_repository.dart
       sqflite_note_repository.dart
     folders/
-      folder_repository.dart
       sqflite_folder_repository.dart
-  domain/
-    notes/
+  models/
+    note/
       note.dart
       note_repository.dart
       use_cases/
@@ -51,7 +49,7 @@ lib/
         get_note.dart
         get_all_notes.dart
         search_notes_by_title.dart
-    folders/
+    folder/
       folder.dart
       folder_repository.dart
       use_cases/
@@ -109,16 +107,16 @@ lib/
 
 | Layer | Responsibility | Knows About |
 |---|---|---|
-| **Data** | Isar schemas, repository implementations | Isar only |
-| **Domain** | Entities, use cases, repository interfaces | Pure Dart only |
-| **Presentation** | Screens, widgets, Riverpod providers | Flutter, Domain |
+| **Data** | sqflite implementations of repositories | sqflite only |
+| **Models** | Entities, use cases, repository interfaces | Pure Dart only |
+| **Presentation** | Screens, widgets, Riverpod providers | Flutter, Models |
 | **Utils** | Routing, constants, shared extensions | All layers |
 
 **Key rules:**
-- The domain layer must never import Flutter or Isar.
+- The models layer must never import Flutter or sqflite.
 - The data layer must never import Flutter widgets.
-- Every repository must have an abstract interface (domain) and a concrete Isar implementation (data). This satisfies the Dependency Inversion principle.
-- Providers call use cases. Use cases call repository interfaces. Repositories talk to Isar.
+- Every repository must have an abstract interface (models/) and a concrete sqflite implementation (data/). This satisfies the Dependency Inversion principle.
+- Providers call use cases. Use cases call repository interfaces. Repositories talk to sqflite.
 
 ---
 
@@ -139,10 +137,10 @@ Each repository has two files:
 
 ---
 
-## 5. Domain Layer
+## 5. Models Layer
 
 ### Entities
-Pure Dart classes with no framework dependencies. Mirror the schemas but without Isar annotations.
+Pure Dart classes with no framework dependencies.
 
 | Entity | Fields |
 |---|---|
@@ -216,19 +214,17 @@ For every feature: **write the test first (red) → write the code (green) → r
 
 ```
 1. Project setup
-   - Add dependencies: isar, isar_flutter_libs, riverpod,
-     flutter_riverpod, go_router, path_provider, share_plus,
-     printing, flutter_test
+   - Add dependencies: sqflite, flutter_riverpod, go_router,
+     path_provider, share_plus, printing, uuid, flutter_test
    - Create full folder structure
    - Router skeleton (empty routes)
 
 2. Data layer — for each entity (Note, then Folder):
    2.1 Write integration test for repository (red)
-   2.2 Write Isar schema
-   2.3 Write repository interface (in domain/)
-   2.4 Write Isar implementation (in data/)
-   2.5 Pass the test (green)
-   2.6 Refactor if needed
+   2.2 Write repository interface (in models/)
+   2.3 Write sqflite implementation (in data/)
+   2.4 Pass the test (green)
+   2.5 Refactor if needed
 
 3. Domain layer — for each use case (Notes first, then Folders):
    3.1 Write unit test for use case (red)
