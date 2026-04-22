@@ -7,6 +7,12 @@
 
 ---
 
+> **Dependency validation rule:** Any package referenced in this spec or the plan must have its latest stable version verified against pub.dev before being added to the project. Never assume a version number — always look it up.
+
+> **Phase gate rule:** Each SDD phase must be fully completed and approved by the user before the next phase begins. Tasks must be fully written and approved before implementation starts. Implementation must be fully complete before the Test Gate begins.
+
+---
+
 ## 1. Data Models
 
 ### 1.1 Note
@@ -127,7 +133,9 @@ Two system folders are created automatically on first app launch and always exis
 | New Folder button | Always visible | Creates a new folder. If a folder is selected, the new folder is created inside it (if depth allows). If no folder is selected or the selected folder is at max depth, the new folder is created at root. |
 
 **Tap-hold (1 second) on a folder or note:**
-- Shows a context menu with: **Delete**
+- Shows a context menu with: **Delete** and (for notes only) **Move to...**
+- Tapping **Move to...** on a note opens a folder picker showing the full folder tree. The user selects a destination folder and the note is moved immediately.
+- The folder picker shows all folders including system folders (Inbox, Stash) as valid destinations.
 - Tapping Delete on a **note** shows: "Delete this note? This cannot be undone." Confirming deletes permanently.
 - Tapping Delete on a **folder:**
   - If the folder is empty: deletes immediately, no prompt.
