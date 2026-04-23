@@ -14,7 +14,7 @@
 | `sqflite` | ^2.4.2 | Local SQLite database |
 | `flutter_riverpod` | ^3.3.1 | State management with Flutter bindings |
 | `go_router` | ^17.2.2 | Navigation |
-| `path_provider` | ^2.1.5 | Locating device storage paths (required by Isar) |
+| `path_provider` | ^2.1.5 | Locating the device's documents directory for the production database path |
 | `share_plus` | ^13.1.0 | Android share sheet for export |
 | `printing` | ^5.14.3 | Print dialog for export |
 | `uuid` | ^4.5.3 | Generating unique IDs for notes and folders |
@@ -25,6 +25,7 @@
 |---|---|---|
 | `flutter_test` | SDK | Widget and unit testing (included by default) |
 | `mocktail` | ^1.0.5 | Mocking repository interfaces in unit tests |
+| `sqflite_common_ffi` | ^2.4.0+2 | Running sqflite tests on the host machine without a device |
 
 ---
 
@@ -236,9 +237,9 @@ For every feature: **write the test first (red) → write the code (green) → r
 4. Presentation layer — one feature at a time:
    4.1 Note Editor
    4.2 Side Panel
-   4.3 Search
-   4.4 Export
-   4.5 Settings
+   4.3 Settings
+   4.4 Search
+   4.5 Export
 
    For each feature:
    4.x.1 Write widget test (red)
