@@ -144,75 +144,75 @@ Use `mocktail` to mock `NoteRepository` and `FolderRepository` in all use-case t
 
 ### 3.1 CreateNote
 
-- [ ] **T-200** Write unit test in `test/models/note/use_cases/create_note_test.dart`. Test cases: created note has a non-empty UUID id; title and body match inputs; folderId matches input; createdAt equals updatedAt; when no folderId is given, folderId defaults to the Inbox system folder ID.
-- [ ] **T-201** Implement `CreateNote` in `lib/models/note/use_cases/create_note.dart` — constructor takes `NoteRepository`; `execute(title, body, {folderId})` generates UUID, sets createdAt/updatedAt to now, inserts via repository, returns `Note`.
-- [ ] **T-202** Run `flutter test test/models/note/use_cases/create_note_test.dart` (green).
+- [x] **T-200** Write unit test in `test/models/note/use_cases/create_note_test.dart`. Test cases: created note has a non-empty UUID id; title and body match inputs; folderId matches input; createdAt equals updatedAt; when no folderId is given, folderId defaults to the Inbox system folder ID.
+- [x] **T-201** Implement `CreateNote` in `lib/models/note/use_cases/create_note.dart` — constructor takes `NoteRepository`; `execute(title, body, {folderId})` generates UUID, sets createdAt/updatedAt to now, inserts via repository, returns `Note`.
+- [x] **T-202** Run `flutter test test/models/note/use_cases/create_note_test.dart` (green).
 
 ### 3.2 EditNote
 
-- [ ] **T-203** Write unit test in `test/models/note/use_cases/edit_note_test.dart`. Test cases: title is updated; body is updated; updatedAt is set to current time; title that is blank after trim defaults to "Untitled".
-- [ ] **T-204** Implement `EditNote` in `lib/models/note/use_cases/edit_note.dart` — constructor takes `NoteRepository`; `execute(noteId, title, body)` fetches note, trims title (defaults to "Untitled" if blank), sets updatedAt to now, calls repository.update.
-- [ ] **T-205** Run `flutter test test/models/note/use_cases/edit_note_test.dart` (green).
+- [x] **T-203** Write unit test in `test/models/note/use_cases/edit_note_test.dart`. Test cases: title is updated; body is updated; updatedAt is set to current time; title that is blank after trim defaults to "Untitled".
+- [x] **T-204** Implement `EditNote` in `lib/models/note/use_cases/edit_note.dart` — constructor takes `NoteRepository`; `execute(noteId, title, body)` fetches note, trims title (defaults to "Untitled" if blank), sets updatedAt to now, calls repository.update.
+- [x] **T-205** Run `flutter test test/models/note/use_cases/edit_note_test.dart` (green).
 
 ### 3.3 DeleteNote
 
-- [ ] **T-206** Write unit test in `test/models/note/use_cases/delete_note_test.dart`. Test case: repository.delete is called with the correct id.
-- [ ] **T-207** Implement `DeleteNote` in `lib/models/note/use_cases/delete_note.dart` — constructor takes `NoteRepository`; `execute(noteId)` calls repository.delete.
-- [ ] **T-208** Run `flutter test test/models/note/use_cases/delete_note_test.dart` (green).
+- [x] **T-206** Write unit test in `test/models/note/use_cases/delete_note_test.dart`. Test case: repository.delete is called with the correct id.
+- [x] **T-207** Implement `DeleteNote` in `lib/models/note/use_cases/delete_note.dart` — constructor takes `NoteRepository`; `execute(noteId)` calls repository.delete.
+- [x] **T-208** Run `flutter test test/models/note/use_cases/delete_note_test.dart` (green).
 
 ### 3.4 GetNote
 
-- [ ] **T-209** Write unit test in `test/models/note/use_cases/get_note_test.dart`. Test cases: returns note when found; returns null when not found.
-- [ ] **T-210** Implement `GetNote` in `lib/models/note/use_cases/get_note.dart` — constructor takes `NoteRepository`; `execute(noteId)` returns `repository.findById(noteId)`.
-- [ ] **T-211** Run `flutter test test/models/note/use_cases/get_note_test.dart` (green).
+- [x] **T-209** Write unit test in `test/models/note/use_cases/get_note_test.dart`. Test cases: returns note when found; returns null when not found.
+- [x] **T-210** Implement `GetNote` in `lib/models/note/use_cases/get_note.dart` — constructor takes `NoteRepository`; `execute(noteId)` returns `repository.findById(noteId)`.
+- [x] **T-211** Run `flutter test test/models/note/use_cases/get_note_test.dart` (green).
 
 ### 3.5 GetAllNotes
 
-- [ ] **T-212** Write unit test in `test/models/note/use_cases/get_all_notes_test.dart`. Test cases: returns empty list when no notes; returns all notes.
-- [ ] **T-213** Implement `GetAllNotes` in `lib/models/note/use_cases/get_all_notes.dart` — constructor takes `NoteRepository`; `execute()` returns `repository.findAll()`.
-- [ ] **T-214** Run `flutter test test/models/note/use_cases/get_all_notes_test.dart` (green).
+- [x] **T-212** Write unit test in `test/models/note/use_cases/get_all_notes_test.dart`. Test cases: returns empty list when no notes; returns all notes.
+- [x] **T-213** Implement `GetAllNotes` in `lib/models/note/use_cases/get_all_notes.dart` — constructor takes `NoteRepository`; `execute()` returns `repository.findAll()`.
+- [x] **T-214** Run `flutter test test/models/note/use_cases/get_all_notes_test.dart` (green).
 
 ### 3.6 SearchNotesByTitle
 
-- [ ] **T-215** Write unit test in `test/models/note/use_cases/search_notes_by_title_test.dart`. Test cases: empty query returns empty list without calling repository; non-empty query delegates to `repository.searchByTitle`.
-- [ ] **T-216** Implement `SearchNotesByTitle` in `lib/models/note/use_cases/search_notes_by_title.dart` — constructor takes `NoteRepository`; `execute(query)` returns empty list if query is blank, otherwise returns `repository.searchByTitle(query)`.
-- [ ] **T-217** Run `flutter test test/models/note/use_cases/search_notes_by_title_test.dart` (green).
+- [x] **T-215** Write unit test in `test/models/note/use_cases/search_notes_by_title_test.dart`. Test cases: empty query returns empty list without calling repository; non-empty query delegates to `repository.searchByTitle`.
+- [x] **T-216** Implement `SearchNotesByTitle` in `lib/models/note/use_cases/search_notes_by_title.dart` — constructor takes `NoteRepository`; `execute(query)` returns empty list if query is blank, otherwise returns `repository.searchByTitle(query)`.
+- [x] **T-217** Run `flutter test test/models/note/use_cases/search_notes_by_title_test.dart` (green).
 
 ### 3.7 CreateFolder
 
-- [ ] **T-218** Write unit test in `test/models/folder/use_cases/create_folder_test.dart`. Test cases: root folder has depth 1 and parentId null; subfolder has depth 2 and correct parentId; isSystem is false; throws `ArgumentError` when name is "Inbox" (case-insensitive); throws `ArgumentError` when name is "Stash" (case-insensitive); throws `ArgumentError` when resulting depth would exceed maxFolderDepth.
-- [ ] **T-219** Implement `CreateFolder` in `lib/models/folder/use_cases/create_folder.dart` — constructor takes `FolderRepository`; `execute(name, parentId, maxFolderDepth)` validates name and depth, generates UUID, sets createdAt, inserts via repository, returns `Folder`.
-- [ ] **T-220** Run `flutter test test/models/folder/use_cases/create_folder_test.dart` (green).
+- [x] **T-218** Write unit test in `test/models/folder/use_cases/create_folder_test.dart`. Test cases: root folder has depth 1 and parentId null; subfolder has depth 2 and correct parentId; isSystem is false; throws `ArgumentError` when name is "Inbox" (case-insensitive); throws `ArgumentError` when name is "Stash" (case-insensitive); throws `ArgumentError` when resulting depth would exceed maxFolderDepth.
+- [x] **T-219** Implement `CreateFolder` in `lib/models/folder/use_cases/create_folder.dart` — constructor takes `FolderRepository`; `execute(name, parentId, maxFolderDepth)` validates name and depth, generates UUID, sets createdAt, inserts via repository, returns `Folder`.
+- [x] **T-220** Run `flutter test test/models/folder/use_cases/create_folder_test.dart` (green).
 
 ### 3.8 RenameFolder
 
-- [ ] **T-221** Write unit test in `test/models/folder/use_cases/rename_folder_test.dart`. Test cases: repository.update is called with new name; throws `ArgumentError` when new name is "Inbox"; throws `ArgumentError` when new name is "Stash"; throws `ArgumentError` when folder has `isSystem = true`.
-- [ ] **T-222** Implement `RenameFolder` in `lib/models/folder/use_cases/rename_folder.dart` — constructor takes `FolderRepository`; `execute(folderId, newName)` fetches folder, validates, calls repository.update with updated name.
-- [ ] **T-223** Run `flutter test test/models/folder/use_cases/rename_folder_test.dart` (green).
+- [x] **T-221** Write unit test in `test/models/folder/use_cases/rename_folder_test.dart`. Test cases: repository.update is called with new name; throws `ArgumentError` when new name is "Inbox"; throws `ArgumentError` when new name is "Stash"; throws `ArgumentError` when folder has `isSystem = true`.
+- [x] **T-222** Implement `RenameFolder` in `lib/models/folder/use_cases/rename_folder.dart` — constructor takes `FolderRepository`; `execute(folderId, newName)` fetches folder, validates, calls repository.update with updated name.
+- [x] **T-223** Run `flutter test test/models/folder/use_cases/rename_folder_test.dart` (green).
 
 ### 3.9 DeleteFolder
 
-- [ ] **T-224** Write unit test in `test/models/folder/use_cases/delete_folder_test.dart`. Test cases: empty folder is deleted immediately with no note operations; when `moveToStash` chosen and folder has notes, all notes are moved to Stash folder ID then folder is deleted; when `deletePermanently` chosen, all notes in folder are deleted then folder is deleted; throws `ArgumentError` when folder is a system folder; notes in subfolders are also handled during deletion.
-- [ ] **T-225** Implement `DeleteFolder` in `lib/models/folder/use_cases/delete_folder.dart` — constructor takes `FolderRepository` and `NoteRepository`; `execute(folderId, action)` where `action` is `DeleteFolderAction.moveToStash` or `DeleteFolderAction.deletePermanently`; fetches folder, validates not a system folder, resolves subfolders, applies action to all notes, then deletes folder(s).
-- [ ] **T-226** Run `flutter test test/models/folder/use_cases/delete_folder_test.dart` (green).
+- [x] **T-224** Write unit test in `test/models/folder/use_cases/delete_folder_test.dart`. Test cases: empty folder is deleted immediately with no note operations; when `moveToStash` chosen and folder has notes, all notes are moved to Stash folder ID then folder is deleted; when `deletePermanently` chosen, all notes in folder are deleted then folder is deleted; throws `ArgumentError` when folder is a system folder; notes in subfolders are also handled during deletion.
+- [x] **T-225** Implement `DeleteFolder` in `lib/models/folder/use_cases/delete_folder.dart` — constructor takes `FolderRepository` and `NoteRepository`; `execute(folderId, action)` where `action` is `DeleteFolderAction.moveToStash` or `DeleteFolderAction.deletePermanently`; fetches folder, validates not a system folder, resolves subfolders, applies action to all notes, then deletes folder(s).
+- [x] **T-226** Run `flutter test test/models/folder/use_cases/delete_folder_test.dart` (green).
 
 ### 3.10 GetFolders
 
-- [ ] **T-227** Write unit test in `test/models/folder/use_cases/get_folders_test.dart`. Test case: delegates to `repository.findAll()`.
-- [ ] **T-228** Implement `GetFolders` in `lib/models/folder/use_cases/get_folders.dart` — constructor takes `FolderRepository`; `execute()` returns `repository.findAll()`.
-- [ ] **T-229** Run `flutter test test/models/folder/use_cases/get_folders_test.dart` (green).
+- [x] **T-227** Write unit test in `test/models/folder/use_cases/get_folders_test.dart`. Test case: delegates to `repository.findAll()`.
+- [x] **T-228** Implement `GetFolders` in `lib/models/folder/use_cases/get_folders.dart` — constructor takes `FolderRepository`; `execute()` returns `repository.findAll()`.
+- [x] **T-229** Run `flutter test test/models/folder/use_cases/get_folders_test.dart` (green).
 
 ### 3.11 GetNotesInFolder
 
-- [ ] **T-230** Write unit test in `test/models/folder/use_cases/get_notes_in_folder_test.dart`. Test case: delegates to `repository.findByFolderId(folderId)`.
-- [ ] **T-231** Implement `GetNotesInFolder` in `lib/models/folder/use_cases/get_notes_in_folder.dart` — constructor takes `NoteRepository`; `execute(folderId)` returns `repository.findByFolderId(folderId)`.
-- [ ] **T-232** Run `flutter test test/models/folder/use_cases/get_notes_in_folder_test.dart` (green).
+- [x] **T-230** Write unit test in `test/models/folder/use_cases/get_notes_in_folder_test.dart`. Test case: delegates to `repository.findByFolderId(folderId)`.
+- [x] **T-231** Implement `GetNotesInFolder` in `lib/models/folder/use_cases/get_notes_in_folder.dart` — constructor takes `NoteRepository`; `execute(folderId)` returns `repository.findByFolderId(folderId)`.
+- [x] **T-232** Run `flutter test test/models/folder/use_cases/get_notes_in_folder_test.dart` (green).
 
 ### 3.12 MoveNoteToFolder
 
-- [ ] **T-233** Write unit test in `test/models/folder/use_cases/move_note_to_folder_test.dart`. Test case: fetches the note, sets folderId to targetFolderId, calls repository.update.
-- [ ] **T-234** Implement `MoveNoteToFolder` in `lib/models/folder/use_cases/move_note_to_folder.dart` — constructor takes `NoteRepository`; `execute(noteId, targetFolderId)` fetches note, applies updated folderId, calls repository.update.
-- [ ] **T-235** Run `flutter test test/models/folder/use_cases/move_note_to_folder_test.dart` (green).
+- [x] **T-233** Write unit test in `test/models/folder/use_cases/move_note_to_folder_test.dart`. Test case: fetches the note, sets folderId to targetFolderId, calls repository.update.
+- [x] **T-234** Implement `MoveNoteToFolder` in `lib/models/folder/use_cases/move_note_to_folder.dart` — constructor takes `NoteRepository`; `execute(noteId, targetFolderId)` fetches note, applies updated folderId, calls repository.update.
+- [x] **T-235** Run `flutter test test/models/folder/use_cases/move_note_to_folder_test.dart` (green).
 
 ---
 
