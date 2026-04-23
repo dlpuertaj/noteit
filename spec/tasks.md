@@ -220,14 +220,8 @@ Use `mocktail` to mock `NoteRepository` and `FolderRepository` in all use-case t
 
 For each feature: write widget test (red) → implement provider → implement screen and widgets → pass the test (green) → refactor.
 
-### 4.1 Settings
 
-- [ ] **T-300** Write widget test in `test/presentation/settings/settings_screen_test.dart`. Test cases: screen shows current `maxFolderDepth` value; increasing the value saves the new value; decreasing the value saves the new value; value is clamped to range 1–5; back button navigates back to Note Editor.
-- [ ] **T-301** Implement `SettingsNotifier` and `settingsProvider` in `lib/presentation/settings/providers/settings_provider.dart` — reads `max_folder_depth` from the `settings` table via `AppDatabase` on init; exposes `maxFolderDepth` as state; provides `setMaxFolderDepth(int value)` that persists the new value to the database.
-- [ ] **T-302** Implement `SettingsScreen` in `lib/presentation/settings/screens/settings_screen.dart` — shows a numeric selector for `maxFolderDepth` (min 1, max 5); changes take effect immediately; back button returns to Note Editor.
-- [ ] **T-303** Run `flutter test test/presentation/settings/` (green).
-
-### 4.2 Note Editor
+### 4.1 Note Editor
 
 - [ ] **T-304** Write widget test in `test/presentation/notes/note_editor_screen_test.dart`. Test cases: displays current note title and body; typing in title triggers auto-save via `EditNote`; typing in body triggers auto-save; tapping Settings button navigates to `/settings`; tapping Search button navigates to `/search`; tapping Export button navigates to `/export`; tapping Side Panel button shows the side panel overlay; three-dot menu contains "Delete note"; tapping "Delete note" shows confirmation dialog; confirming delete calls `DeleteNote` and loads the next available note.
 - [ ] **T-305** Implement `NoteNotifier` and `noteProvider` in `lib/presentation/notes/providers/note_provider.dart` — state holds current note and full notes list; auto-save debounces field changes and calls `EditNote`; exposes `loadNote(String id)`, `createNote({String? folderId})`, `deleteCurrentNote()`.
@@ -237,7 +231,7 @@ For each feature: write widget test (red) → implement provider → implement s
 - [ ] **T-309** Implement `NoteEditorScreen` in `lib/presentation/notes/screens/note_editor_screen.dart` — full-screen layout with AppBar (Side Panel, Search, Export, Settings buttons + three-dot menu) and body containing `NoteTitleField` and `NoteBodyField`; Side Panel rendered as an overlay, not a route.
 - [ ] **T-310** Run `flutter test test/presentation/notes/` (green).
 
-### 4.3 Side Panel
+### 4.2 Side Panel
 
 - [ ] **T-311** Write widget test in `test/presentation/folders/side_panel_screen_test.dart`. Test cases: Inbox and Stash appear at the top; user folders appear below; tapping a folder reveals its notes; tapping a note opens it in the editor and closes the panel; "New Note" button creates a note in the selected folder (or Inbox if none selected); "New Folder" button creates a folder at the correct depth; tap-hold on a user folder shows Delete; tap-hold on a system folder does NOT show Delete; Delete on a folder with notes shows count prompt with "Move to Stash" and "Delete permanently" options; tap-hold on a note shows "Delete" and "Move to..."; "Move to..." opens the folder picker.
 - [ ] **T-312** Implement `FolderNotifier` and `folderProvider` in `lib/presentation/folders/providers/folder_provider.dart` — state holds full folder tree and selected folder id; exposes `selectFolder(String id)`, `createFolder(String name, String? parentId)`, `deleteFolder(String id, DeleteFolderAction action)`, `renameFolder(String id, String newName)`.
@@ -247,6 +241,14 @@ For each feature: write widget test (red) → implement provider → implement s
 - [ ] **T-316** Implement `FolderPicker` in `lib/presentation/folders/widgets/folder_picker.dart` — full-screen modal showing all folders including Inbox and Stash; tapping a folder calls `MoveNoteToFolder` and dismisses.
 - [ ] **T-317** Implement `SidePanelScreen` in `lib/presentation/folders/screens/side_panel_screen.dart` — slides in from the left as an overlay; contains `FolderTree` plus "New Note" and "New Folder" buttons; tapping outside closes it.
 - [ ] **T-318** Run `flutter test test/presentation/folders/` (green).
+
+### 4.3 Settings
+
+- [ ] **T-300** Write widget test in `test/presentation/settings/settings_screen_test.dart`. Test cases: screen shows current `maxFolderDepth` value; increasing the value saves the new value; decreasing the value saves the new value; value is clamped to range 1–5; back button navigates back to Note Editor.
+- [ ] **T-301** Implement `SettingsNotifier` and `settingsProvider` in `lib/presentation/settings/providers/settings_provider.dart` — reads `max_folder_depth` from the `settings` table via `AppDatabase` on init; exposes `maxFolderDepth` as state; provides `setMaxFolderDepth(int value)` that persists the new value to the database.
+- [ ] **T-302** Implement `SettingsScreen` in `lib/presentation/settings/screens/settings_screen.dart` — shows a numeric selector for `maxFolderDepth` (min 1, max 5); changes take effect immediately; back button returns to Note Editor.
+- [ ] **T-303** Run `flutter test test/presentation/settings/` (green).
+
 
 ### 4.4 Search
 
