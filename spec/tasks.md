@@ -113,28 +113,28 @@
 
 These are pure Dart classes with no framework dependencies. They must exist before repository interfaces can be defined.
 
-- [ ] **T-102** Implement `Note` in `lib/models/note/note.dart` — fields: `id` (String), `title` (String), `body` (String), `folderId` (String), `createdAt` (DateTime), `updatedAt` (DateTime). Immutable; provide `copyWith`.
-- [ ] **T-103** Implement `Folder` in `lib/models/folder/folder.dart` — fields: `id` (String), `name` (String), `parentId` (String?), `depth` (int), `isSystem` (bool), `createdAt` (DateTime). Immutable; provide `copyWith`.
+- [x] **T-102** Implement `Note` in `lib/models/note/note.dart` — fields: `id` (String), `title` (String), `body` (String), `folderId` (String), `createdAt` (DateTime), `updatedAt` (DateTime). Immutable; provide `copyWith`.
+- [x] **T-103** Implement `Folder` in `lib/models/folder/folder.dart` — fields: `id` (String), `name` (String), `parentId` (String?), `depth` (int), `isSystem` (bool), `createdAt` (DateTime). Immutable; provide `copyWith`.
 
 ### 2.2 AppDatabase
 
-- [ ] **T-104** Write integration test for `AppDatabase` in `test/data/app_database_test.dart`. Test cases: (a) `notes` table exists with columns `id`, `title`, `body`, `folder_id`, `created_at`, `updated_at`; (b) `folders` table exists with columns `id`, `name`, `parent_id`, `depth`, `is_system`, `created_at`; (c) `settings` table exists with column `max_folder_depth`; (d) Inbox system folder is present after init; (e) Stash system folder is present after init; (f) re-initializing does not duplicate system folders or settings row. Use in-memory database via `sqflite_common_ffi`.
-- [ ] **T-105** Implement `AppDatabase` in `lib/data/app_database.dart` — `onCreate` creates `notes`, `folders`, and `settings` tables; seeds Inbox and Stash system folders with fixed UUIDs and `is_system = 1`; seeds one `settings` row with `max_folder_depth = 2`. Expose a `database` getter of type `Future<Database>`.
-- [ ] **T-106** Run `flutter test test/data/app_database_test.dart` — confirm all tests pass (green).
+- [x] **T-104** Write integration test for `AppDatabase` in `test/data/app_database_test.dart`. Test cases: (a) `notes` table exists with columns `id`, `title`, `body`, `folder_id`, `created_at`, `updated_at`; (b) `folders` table exists with columns `id`, `name`, `parent_id`, `depth`, `is_system`, `created_at`; (c) `settings` table exists with column `max_folder_depth`; (d) Inbox system folder is present after init; (e) Stash system folder is present after init; (f) re-initializing does not duplicate system folders or settings row. Use in-memory database via `sqflite_common_ffi`.
+- [x] **T-105** Implement `AppDatabase` in `lib/data/app_database.dart` — `onCreate` creates `notes`, `folders`, and `settings` tables; seeds Inbox and Stash system folders with fixed UUIDs and `is_system = 1`; seeds one `settings` row with `max_folder_depth = 2`. Expose a `database` getter of type `Future<Database>`.
+- [x] **T-106** Run `flutter test test/data/app_database_test.dart` — confirm all tests pass (green).
 
 ### 2.3 Note Repository
 
-- [ ] **T-107** Write integration tests for `SqfliteNoteRepository` in `test/data/notes/sqflite_note_repository_test.dart`. Test cases: insert then findById returns the note; findAll returns all inserted notes; findByFolderId returns only notes in that folder; searchByTitle returns partial case-insensitive matches; searchByTitle returns empty list for empty query; update persists changes to title, body, folderId, and updatedAt; delete makes findById return null; deleteAllInFolder removes all notes with that folderId; moveAllToFolder updates folderId for all given ids. Use in-memory database.
-- [ ] **T-108** Define `NoteRepository` abstract class in `lib/models/note/note_repository.dart` with async methods: `insert(Note)`, `findById(String)`, `findAll()`, `findByFolderId(String)`, `searchByTitle(String)`, `update(Note)`, `delete(String)`, `deleteAllInFolder(String)`, `moveAllToFolder(List<String> ids, String targetFolderId)`.
-- [ ] **T-109** Implement `SqfliteNoteRepository` in `lib/data/notes/sqflite_note_repository.dart` — implements `NoteRepository`, takes `AppDatabase` in constructor, maps `Note` ↔ sqflite row maps.
-- [ ] **T-110** Run `flutter test test/data/notes/` — confirm all tests pass (green).
+- [x] **T-107** Write integration tests for `SqfliteNoteRepository` in `test/data/notes/sqflite_note_repository_test.dart`. Test cases: insert then findById returns the note; findAll returns all inserted notes; findByFolderId returns only notes in that folder; searchByTitle returns partial case-insensitive matches; searchByTitle returns empty list for empty query; update persists changes to title, body, folderId, and updatedAt; delete makes findById return null; deleteAllInFolder removes all notes with that folderId; moveAllToFolder updates folderId for all given ids. Use in-memory database.
+- [x] **T-108** Define `NoteRepository` abstract class in `lib/models/note/note_repository.dart` with async methods: `insert(Note)`, `findById(String)`, `findAll()`, `findByFolderId(String)`, `searchByTitle(String)`, `update(Note)`, `delete(String)`, `deleteAllInFolder(String)`, `moveAllToFolder(List<String> ids, String targetFolderId)`.
+- [x] **T-109** Implement `SqfliteNoteRepository` in `lib/data/notes/sqflite_note_repository.dart` — implements `NoteRepository`, takes `AppDatabase` in constructor, maps `Note` ↔ sqflite row maps.
+- [x] **T-110** Run `flutter test test/data/notes/` — confirm all tests pass (green).
 
 ### 2.4 Folder Repository
 
-- [ ] **T-111** Write integration tests for `SqfliteFolderRepository` in `test/data/folders/sqflite_folder_repository_test.dart`. Test cases: insert then findById returns the folder; findAll includes system folders seeded by AppDatabase; update persists name change; delete removes a non-system folder (findById returns null after delete). Use in-memory database.
-- [ ] **T-112** Define `FolderRepository` abstract class in `lib/models/folder/folder_repository.dart` with async methods: `insert(Folder)`, `findById(String)`, `findAll()`, `update(Folder)`, `delete(String)`.
-- [ ] **T-113** Implement `SqfliteFolderRepository` in `lib/data/folders/sqflite_folder_repository.dart` — implements `FolderRepository`, takes `AppDatabase` in constructor, maps `Folder` ↔ sqflite row maps.
-- [ ] **T-114** Run `flutter test test/data/folders/` — confirm all tests pass (green).
+- [x] **T-111** Write integration tests for `SqfliteFolderRepository` in `test/data/folders/sqflite_folder_repository_test.dart`. Test cases: insert then findById returns the folder; findAll includes system folders seeded by AppDatabase; update persists name change; delete removes a non-system folder (findById returns null after delete). Use in-memory database.
+- [x] **T-112** Define `FolderRepository` abstract class in `lib/models/folder/folder_repository.dart` with async methods: `insert(Folder)`, `findById(String)`, `findAll()`, `update(Folder)`, `delete(String)`.
+- [x] **T-113** Implement `SqfliteFolderRepository` in `lib/data/folders/sqflite_folder_repository.dart` — implements `FolderRepository`, takes `AppDatabase` in constructor, maps `Folder` ↔ sqflite row maps.
+- [x] **T-114** Run `flutter test test/data/folders/` — confirm all tests pass (green).
 
 ---
 
