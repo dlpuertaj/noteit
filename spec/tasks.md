@@ -233,31 +233,31 @@ For each feature: write widget test (red) → implement provider → implement s
 
 ### 4.2 Side Panel
 
-- [ ] **T-311** Write widget test in `test/presentation/folders/side_panel_screen_test.dart`. Test cases: Inbox and Stash appear at the top; user folders appear below; tapping a folder reveals its notes; tapping a note opens it in the editor and closes the panel; "New Note" button creates a note in the selected folder (or Inbox if none selected); "New Folder" button creates a folder at the correct depth; tap-hold on a user folder shows Delete; tap-hold on a system folder does NOT show Delete; Delete on a folder with notes shows count prompt with "Move to Stash" and "Delete permanently" options; tap-hold on a note shows "Delete" and "Move to..."; "Move to..." opens the folder picker.
-- [ ] **T-312** Implement `FolderNotifier` and `folderProvider` in `lib/presentation/folders/providers/folder_provider.dart` — state holds full folder tree and selected folder id; exposes `selectFolder(String id)`, `createFolder(String name, String? parentId)`, `deleteFolder(String id, DeleteFolderAction action)`, `renameFolder(String id, String newName)`.
-- [ ] **T-313** Implement `FolderItem` in `lib/presentation/folders/widgets/folder_item.dart` — shows folder name; expandable to show subfolders; tap-hold context menu (Delete for user folders; no Delete for system folders).
-- [ ] **T-314** Implement `NoteItem` in `lib/presentation/folders/widgets/note_item.dart` — shows note title; tap opens note; tap-hold context menu ("Delete", "Move to...").
-- [ ] **T-315** Implement `FolderTree` in `lib/presentation/folders/widgets/folder_tree.dart` — renders system folders (Inbox, Stash) first, then user folders, using `FolderItem` and `NoteItem`.
-- [ ] **T-316** Implement `FolderPicker` in `lib/presentation/folders/widgets/folder_picker.dart` — full-screen modal showing all folders including Inbox and Stash; tapping a folder calls `MoveNoteToFolder` and dismisses.
-- [ ] **T-317** Implement `SidePanelScreen` in `lib/presentation/folders/screens/side_panel_screen.dart` — slides in from the left as an overlay; contains `FolderTree` plus "New Note" and "New Folder" buttons; tapping outside closes it.
-- [ ] **T-318** Run `flutter test test/presentation/folders/` (green).
+- [x] **T-311** Write widget test in `test/presentation/folders/side_panel_screen_test.dart`. Test cases: Inbox and Stash appear at the top; user folders appear below; tapping a folder reveals its notes; tapping a note opens it in the editor and closes the panel; "New Note" button creates a note in the selected folder (or Inbox if none selected); "New Folder" button creates a folder at the correct depth; tap-hold on a user folder shows Delete; tap-hold on a system folder does NOT show Delete; Delete on a folder with notes shows count prompt with "Move to Stash" and "Delete permanently" options; tap-hold on a note shows "Delete" and "Move to..."; "Move to..." opens the folder picker.
+- [x] **T-312** Implement `FolderNotifier` and `folderProvider` in `lib/presentation/folders/providers/folder_provider.dart` — state holds full folder tree and selected folder id; exposes `selectFolder(String id)`, `createFolder(String name, String? parentId)`, `deleteFolder(String id, DeleteFolderAction action)`, `renameFolder(String id, String newName)`.
+- [x] **T-313** Implement `FolderItem` in `lib/presentation/folders/widgets/folder_item.dart` — shows folder name; expandable to show subfolders; tap-hold context menu (Delete for user folders; no Delete for system folders).
+- [x] **T-314** Implement `NoteItem` in `lib/presentation/folders/widgets/note_item.dart` — shows note title; tap opens note; tap-hold context menu ("Delete", "Move to...").
+- [x] **T-315** Implement `FolderTree` in `lib/presentation/folders/widgets/folder_tree.dart` — renders system folders (Inbox, Stash) first, then user folders, using `FolderItem` and `NoteItem`.
+- [x] **T-316** Implement `FolderPicker` in `lib/presentation/folders/widgets/folder_picker.dart` — full-screen modal showing all folders including Inbox and Stash; tapping a folder calls `MoveNoteToFolder` and dismisses.
+- [x] **T-317** Implement `SidePanelScreen` in `lib/presentation/folders/screens/side_panel_screen.dart` — slides in from the left as an overlay; contains `FolderTree` plus "New Note" and "New Folder" buttons; tapping outside closes it.
+- [x] **T-318** Run `flutter test test/presentation/folders/` (green).
 
 ### 4.3 Settings
 
-- [ ] **T-300** Write widget test in `test/presentation/settings/settings_screen_test.dart`. Test cases: screen shows current `maxFolderDepth` value; increasing the value saves the new value; decreasing the value saves the new value; value is clamped to range 1–5; back button navigates back to Note Editor.
-- [ ] **T-301** Implement `SettingsNotifier` and `settingsProvider` in `lib/presentation/settings/providers/settings_provider.dart` — reads `max_folder_depth` from the `settings` table via `AppDatabase` on init; exposes `maxFolderDepth` as state; provides `setMaxFolderDepth(int value)` that persists the new value to the database.
-- [ ] **T-302** Implement `SettingsScreen` in `lib/presentation/settings/screens/settings_screen.dart` — shows a numeric selector for `maxFolderDepth` (min 1, max 5); changes take effect immediately; back button returns to Note Editor.
-- [ ] **T-303** Run `flutter test test/presentation/settings/` (green).
+- [x] **T-300** Write widget test in `test/presentation/settings/settings_screen_test.dart`. Test cases: screen shows current `maxFolderDepth` value; increasing the value saves the new value; decreasing the value saves the new value; value is clamped to range 1–5; back button navigates back to Note Editor.
+- [x] **T-301** Implement `SettingsNotifier` and `settingsProvider` in `lib/presentation/settings/providers/settings_provider.dart` — reads `max_folder_depth` from the `settings` table via `AppDatabase` on init; exposes `maxFolderDepth` as state; provides `setMaxFolderDepth(int value)` that persists the new value to the database.
+- [x] **T-302** Implement `SettingsScreen` in `lib/presentation/settings/screens/settings_screen.dart` — shows a numeric selector for `maxFolderDepth` (min 1, max 5); changes take effect immediately; back button returns to Note Editor.
+- [x] **T-303** Run `flutter test test/presentation/settings/` (green).
 
 
 ### 4.4 Search
 
-- [ ] **T-319** Write widget test in `test/presentation/search/search_results_screen_test.dart`. Test cases: search field is auto-focused on open; results update as user types; each result shows note title and folder name; tapping a result opens the note in the editor and dismisses search; empty query shows blank results area (no "No notes found."); no match shows "No notes found."; back button returns to Note Editor.
-- [ ] **T-320** Implement `SearchNotifier` and `searchProvider` in `lib/presentation/search/providers/search_provider.dart` — state holds query string and list of matching notes; `setQuery(String)` calls `SearchNotesByTitle`.
-- [ ] **T-321** Implement `SearchBar` widget in `lib/presentation/search/widgets/search_bar.dart` — auto-focused text field; notifies provider on every change.
-- [ ] **T-322** Implement `SearchResultItem` in `lib/presentation/search/widgets/search_result_item.dart` — displays note title and the name of its folder.
-- [ ] **T-323** Implement `SearchResultsScreen` in `lib/presentation/search/screens/search_results_screen.dart` — full-screen layout with `SearchBar` at top and scrollable list of `SearchResultItem` widgets below.
-- [ ] **T-324** Run `flutter test test/presentation/search/` (green).
+- [x] **T-319** Write widget test in `test/presentation/search/search_results_screen_test.dart`. Test cases: search field is auto-focused on open; results update as user types; each result shows note title and folder name; tapping a result opens the note in the editor and dismisses search; empty query shows blank results area (no "No notes found."); no match shows "No notes found."; back button returns to Note Editor.
+- [x] **T-320** Implement `SearchNotifier` and `searchProvider` in `lib/presentation/search/providers/search_provider.dart` — state holds query string and list of matching notes; `setQuery(String)` calls `SearchNotesByTitle`.
+- [x] **T-321** Implement `SearchBar` widget in `lib/presentation/search/widgets/search_bar.dart` — auto-focused text field; notifies provider on every change.
+- [x] **T-322** Implement `SearchResultItem` in `lib/presentation/search/widgets/search_result_item.dart` — displays note title and the name of its folder.
+- [x] **T-323** Implement `SearchResultsScreen` in `lib/presentation/search/screens/search_results_screen.dart` — full-screen layout with `SearchBar` at top and scrollable list of `SearchResultItem` widgets below.
+- [x] **T-324** Run `flutter test test/presentation/search/` (green).
 
 ### 4.5 Export
 
