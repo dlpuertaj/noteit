@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notes/data/app_database.dart';
 import 'package:notes/data/notes/sqflite_note_repository.dart';
+import 'package:notes/models/folder/use_cases/move_note_to_folder.dart';
 import 'package:notes/models/note/note.dart';
 import 'package:notes/models/note/note_repository.dart';
 import 'package:notes/models/note/use_cases/create_note.dart';
@@ -33,6 +34,10 @@ final _getAllNotesProvider = Provider<GetAllNotes>((ref) {
 
 final _getNoteProvider = Provider<GetNote>((ref) {
   return GetNote(ref.read(noteRepositoryProvider));
+});
+
+final _moveNoteToFolderProvider = Provider<MoveNoteToFolder>((ref) {
+  return MoveNoteToFolder(ref.read(noteRepositoryProvider));
 });
 
 class NoteState {
@@ -107,6 +112,31 @@ class NoteNotifier extends Notifier<NoteState> {
     } else {
       state = NoteState(currentNote: remaining.last, allNotes: remaining);
     }
+  }
+
+  Future<void> deleteNoteById(String noteId) async {
+    await ref.read(_deleteNoteProvider).execute(noteId);
+    final remaining = state.allNotes.where((n) => n.id != noteId).toList();
+    if (state.currentNote?.id == noteId) {
+      if (remaining.isEmpty) {
+        final newNote = await ref.read(_createNoteProvider).execute('', '');
+        state = NoteState(currentNote: newNote, allNotes: [newNote]);
+      } else {
+        state = NoteState(currentNote: remaining.last, allNotes: remaining);
+      }
+    } else {
+      state = state.copyWith(allNotes: remaining);
+    }
+  }
+
+  Future<void> moveNoteToFolder(String noteId, String targetFolderId) async {
+    await ref.read(_moveNoteToFolderProvider).execute(noteId, targetFolderId);
+    final notes = await ref.read(_getAllNotesProvider).execute();
+    final updatedCurrent = notes.firstWhere(
+      (n) => n.id == state.currentNote?.id,
+      orElse: () => state.currentNote!,
+    );
+    state = NoteState(currentNote: updatedCurrent, allNotes: notes);
   }
 }
 

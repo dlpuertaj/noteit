@@ -129,9 +129,12 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
             onTap: () => setState(() => _isSidePanelOpen = false),
             child: Container(color: Colors.black54),
           ),
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
-            child: SidePanelScreen(key: Key('side_panel')),
+            child: SidePanelScreen(
+              key: const Key('side_panel'),
+              onClose: () => setState(() => _isSidePanelOpen = false),
+            ),
           ),
         ],
       ],
