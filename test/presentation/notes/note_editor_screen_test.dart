@@ -47,20 +47,20 @@ class FakeNoteNotifier extends NoteNotifier {
 GoRouter _testRouter() => GoRouter(
       initialLocation: '/',
       routes: [
-        GoRoute(path: '/', builder: (_, __) => const NoteEditorScreen()),
+        GoRoute(path: '/', builder: (_, _) => const NoteEditorScreen()),
         GoRoute(
           path: '/settings',
-          builder: (_, __) =>
+          builder: (_, _) =>
               const Scaffold(body: Center(child: Text('Settings Screen'))),
         ),
         GoRoute(
           path: '/search',
-          builder: (_, __) =>
+          builder: (_, _) =>
               const Scaffold(body: Center(child: Text('Search Screen'))),
         ),
         GoRoute(
           path: '/export',
-          pageBuilder: (_, __) => const MaterialPage(
+          pageBuilder: (_, _) => const MaterialPage(
             fullscreenDialog: true,
             child: Scaffold(body: Center(child: Text('Export Screen'))),
           ),
