@@ -223,13 +223,13 @@ For each feature: write widget test (red) → implement provider → implement s
 
 ### 4.1 Note Editor
 
-- [ ] **T-304** Write widget test in `test/presentation/notes/note_editor_screen_test.dart`. Test cases: displays current note title and body; typing in title triggers auto-save via `EditNote`; typing in body triggers auto-save; tapping Settings button navigates to `/settings`; tapping Search button navigates to `/search`; tapping Export button navigates to `/export`; tapping Side Panel button shows the side panel overlay; three-dot menu contains "Delete note"; tapping "Delete note" shows confirmation dialog; confirming delete calls `DeleteNote` and loads the next available note.
-- [ ] **T-305** Implement `NoteNotifier` and `noteProvider` in `lib/presentation/notes/providers/note_provider.dart` — state holds current note and full notes list; auto-save debounces field changes and calls `EditNote`; exposes `loadNote(String id)`, `createNote({String? folderId})`, `deleteCurrentNote()`.
-- [ ] **T-306** Implement `NoteTitleField` in `lib/presentation/notes/widgets/note_title_field.dart` — single-line text field at the top of the editor; notifies provider on change.
-- [ ] **T-307** Implement `NoteBodyField` in `lib/presentation/notes/widgets/note_body_field.dart` — multiline text field that fills remaining screen space; notifies provider on change.
-- [ ] **T-308** Implement `NoteThreeDotMenu` in `lib/presentation/notes/widgets/note_three_dot_menu.dart` — popup menu with "Delete note"; shows confirmation dialog before calling provider.
-- [ ] **T-309** Implement `NoteEditorScreen` in `lib/presentation/notes/screens/note_editor_screen.dart` — full-screen layout with AppBar (Side Panel, Search, Export, Settings buttons + three-dot menu) and body containing `NoteTitleField` and `NoteBodyField`; Side Panel rendered as an overlay, not a route.
-- [ ] **T-310** Run `flutter test test/presentation/notes/` (green).
+- [x] **T-304** Write widget test in `test/presentation/notes/note_editor_screen_test.dart`. Test cases: displays current note title and body; typing in title triggers auto-save via `EditNote`; typing in body triggers auto-save; tapping Settings button navigates to `/settings`; tapping Search button navigates to `/search`; tapping Export button navigates to `/export`; tapping Side Panel button shows the side panel overlay; three-dot menu contains "Delete note"; tapping "Delete note" shows confirmation dialog; confirming delete calls `DeleteNote` and loads the next available note.
+- [x] **T-305** Implement `NoteNotifier` and `noteProvider` in `lib/presentation/notes/providers/note_provider.dart` — state holds current note and full notes list; auto-save debounces field changes and calls `EditNote`; exposes `loadNote(String id)`, `createNote({String? folderId})`, `deleteCurrentNote()`.
+- [x] **T-306** Implement `NoteTitleField` in `lib/presentation/notes/widgets/note_title_field.dart` — single-line text field at the top of the editor; notifies provider on change.
+- [x] **T-307** Implement `NoteBodyField` in `lib/presentation/notes/widgets/note_body_field.dart` — multiline text field that fills remaining screen space; notifies provider on change.
+- [x] **T-308** Implement `NoteThreeDotMenu` in `lib/presentation/notes/widgets/note_three_dot_menu.dart` — popup menu with "Delete note"; shows confirmation dialog before calling provider.
+- [x] **T-309** Implement `NoteEditorScreen` in `lib/presentation/notes/screens/note_editor_screen.dart` — full-screen layout with AppBar (Side Panel, Search, Export, Settings buttons + three-dot menu) and body containing `NoteTitleField` and `NoteBodyField`; Side Panel rendered as an overlay, not a route.
+- [x] **T-310** Run `flutter test test/presentation/notes/` (green).
 
 ### 4.2 Side Panel
 
