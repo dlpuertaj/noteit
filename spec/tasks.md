@@ -261,16 +261,16 @@ For each feature: write widget test (red) → implement provider → implement s
 
 ### 4.5 Export
 
-- [ ] **T-325** Write widget test in `test/presentation/export/export_bottom_sheet_test.dart`. Test cases: Share, Print, and Download buttons are all visible; tapping Share calls `share_plus` with note content as plain text; tapping Print calls the `printing` package; tapping Download saves a `.txt` file to the Downloads folder; storage permission failure on Download shows error "Could not save file. Please check storage permissions."; tapping outside the sheet dismisses it.
-- [ ] **T-326** Implement `ExportBottomSheet` in `lib/presentation/export/screens/export_bottom_sheet.dart` — bottom sheet with Share, Print, and Download action buttons using the current note's title and body as plain text.
-- [ ] **T-327** Run `flutter test test/presentation/export/` (green).
+- [x] **T-325** Write widget test in `test/presentation/export/export_bottom_sheet_test.dart`. Test cases: Share, Print, and Download buttons are all visible; tapping Share calls `share_plus` with note content as plain text; tapping Print calls the `printing` package; tapping Download saves a `.txt` file to the Downloads folder; storage permission failure on Download shows error "Could not save file. Please check storage permissions."; tapping outside the sheet dismisses it.
+- [x] **T-326** Implement `ExportBottomSheet` in `lib/presentation/export/screens/export_bottom_sheet.dart` — bottom sheet with Share, Print, and Download action buttons using the current note's title and body as plain text.
+- [x] **T-327** Run `flutter test test/presentation/export/` (green).
 
 ---
 
 ## Phase 5 — Utils
 
-- [ ] **T-400** Define constants in `lib/utils/constants.dart` — Inbox system folder UUID (fixed), Stash system folder UUID (fixed), reserved folder names list (`["Inbox", "Stash"]`), default max folder depth (2).
-- [ ] **T-401** Update `lib/utils/router.dart` — replace all placeholder screens with the real screen widgets from the presentation layer.
-- [ ] **T-402** Verify Side Panel is wired as an overlay inside `NoteEditorScreen` (not a separate route), per the navigation spec.
-- [ ] **T-403** Run `flutter analyze` — zero errors and zero warnings.
-- [ ] **T-404** Run `flutter test` — all tests pass.
+- [x] **T-400** Define constants in `lib/utils/constants.dart` — Inbox system folder UUID (fixed), Stash system folder UUID (fixed), reserved folder names list (`["Inbox", "Stash"]`), default max folder depth (2).
+- [x] **T-401** Update `lib/utils/router.dart` — replace all placeholder screens with the real screen widgets from the presentation layer.
+- [x] **T-402** Verify Side Panel is wired as an overlay inside `NoteEditorScreen` (not a separate route), per the navigation spec.
+- [x] **T-403** Run `flutter analyze` — zero errors and zero warnings.
+- [x] **T-404** Run `flutter test` — all tests pass.

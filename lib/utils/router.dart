@@ -1,47 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:notes/presentation/export/screens/export_bottom_sheet.dart';
+import 'package:notes/presentation/notes/screens/note_editor_screen.dart';
+import 'package:notes/presentation/search/screens/search_results_screen.dart';
+import 'package:notes/presentation/settings/screens/settings_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const _PlaceholderScreen(name: 'Note Editor'),
+      builder: (_, _) => const NoteEditorScreen(),
     ),
     GoRoute(
       path: '/settings',
-      builder: (context, state) => const _PlaceholderScreen(name: 'Settings'),
+      builder: (_, _) => const SettingsScreen(),
     ),
     GoRoute(
       path: '/search',
-      builder: (context, state) => const _PlaceholderScreen(name: 'Search Results'),
+      builder: (_, _) => const SearchResultsScreen(),
     ),
     GoRoute(
       path: '/export',
-      pageBuilder: (context, state) => const MaterialPage(
-        fullscreenDialog: true,
-        child: _PlaceholderScreen(name: 'Export'),
-      ),
-    ),
-    GoRoute(
-      path: '/folders/picker',
-      pageBuilder: (context, state) => const MaterialPage(
-        fullscreenDialog: true,
-        child: _PlaceholderScreen(name: 'Folder Picker'),
+      pageBuilder: (_, state) => _BottomSheetPage(
+        key: state.pageKey,
+        child: const ExportBottomSheet(),
       ),
     ),
   ],
 );
 
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen({required this.name});
-  final String name;
+class _BottomSheetPage<T> extends Page<T> {
+  const _BottomSheetPage({required this.child, super.key});
+
+  final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(name)),
-      body: Center(child: Text(name)),
+  Route<T> createRoute(BuildContext context) {
+    return ModalBottomSheetRoute<T>(
+      settings: this,
+      isScrollControlled: false,
+      builder: (_) => child,
     );
   }
 }

@@ -100,6 +100,7 @@ Rules that govern how the AI agent (Claude) must behave throughout this project.
 ### Always Do
 - Apply clean code principles at all times (meaningful names, single responsibility, DRY, small functions).
 - Always verify dependency versions against pub.dev before adding or updating them in the plan. Never assume a version — always look it up.
+- Any custom widget that contains a `ListTile` (or other Material-dependent widget) must wrap its root with `Material(type: MaterialType.transparency)`. Flutter requires a Material ancestor in the tree; omitting it crashes at runtime with "No Material widget found."
 
 ### Ask First
 - Before running any shell command or script.

@@ -78,33 +78,36 @@ class FolderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onLongPressStart: (details) =>
-              _showFolderContextMenu(context, details.globalPosition),
-          child: ListTile(
-            leading: Icon(isExpanded ? Icons.folder_open : Icons.folder),
-            title: Text(folder.name),
-            onTap: onTap,
-          ),
-        ),
-        if (isExpanded)
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Column(
-              children: notes
-                  .map((note) => NoteItem(
-                        note: note,
-                        onTap: () => onNoteSelected(note.id),
-                        onDelete: () => onDeleteNote(note.id),
-                        onMove: () => onMoveNote(note.id),
-                      ))
-                  .toList(),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onLongPressStart: (details) =>
+                _showFolderContextMenu(context, details.globalPosition),
+            child: ListTile(
+              leading: Icon(isExpanded ? Icons.folder_open : Icons.folder),
+              title: Text(folder.name),
+              onTap: onTap,
             ),
           ),
-      ],
+          if (isExpanded)
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Column(
+                children: notes
+                    .map((note) => NoteItem(
+                          note: note,
+                          onTap: () => onNoteSelected(note.id),
+                          onDelete: () => onDeleteNote(note.id),
+                          onMove: () => onMoveNote(note.id),
+                        ))
+                    .toList(),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

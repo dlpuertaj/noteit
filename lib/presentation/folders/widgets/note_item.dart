@@ -37,13 +37,16 @@ class NoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPressStart: (details) =>
-          _showNoteContextMenu(context, details.globalPosition),
-      child: ListTile(
-        leading: const Icon(Icons.note),
-        title: Text(note.title.isEmpty ? 'Untitled' : note.title),
-        onTap: onTap,
+    return Material(
+      type: MaterialType.transparency,
+      child: GestureDetector(
+        onLongPressStart: (details) =>
+            _showNoteContextMenu(context, details.globalPosition),
+        child: ListTile(
+          leading: const Icon(Icons.note),
+          title: Text(note.title.isEmpty ? 'Untitled' : note.title),
+          onTap: onTap,
+        ),
       ),
     );
   }
