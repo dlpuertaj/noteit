@@ -61,6 +61,8 @@ class FakeFolderNotifier extends FolderNotifier {
   String? createdFolderParentId;
   String? deletedFolderId;
   DeleteFolderAction? deletedFolderAction;
+  String? renamedFolderId;
+  String? renamedFolderNewName;
 
   @override
   FolderState build() => _initial;
@@ -87,6 +89,12 @@ class FakeFolderNotifier extends FolderNotifier {
   Future<void> deleteFolder(String id, DeleteFolderAction action) async {
     deletedFolderId = id;
     deletedFolderAction = action;
+  }
+
+  @override
+  Future<void> renameFolder(String id, String newName) async {
+    renamedFolderId = id;
+    renamedFolderNewName = newName;
   }
 }
 
@@ -128,6 +136,9 @@ class FakeNoteNotifier extends NoteNotifier {
 
   @override
   Future<void> deleteCurrentNote() async {}
+
+  @override
+  Future<void> refreshNotes() async {}
 }
 
 Widget _buildApp({
@@ -350,6 +361,45 @@ void main() {
 
     expect(find.text('Delete'), findsOneWidget);
     expect(find.text('Move to...'), findsOneWidget);
+  });
+
+  testWidgets('tap-hold on a user folder shows Rename and Delete', (tester) async {
+    await tester.pumpWidget(_buildApp(
+      folderState: baseFolderState,
+      noteState: baseNoteState,
+    ));
+
+    await tester.longPress(find.text('My Folder'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Rename'), findsOneWidget);
+    expect(find.text('Delete'), findsOneWidget);
+  });
+
+  testWidgets('Rename on a folder calls renameFolder on provider', (tester) async {
+    final folderNotifier = FakeFolderNotifier(baseFolderState);
+
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        folderProvider.overrideWith(() => folderNotifier),
+        noteProvider.overrideWith(() => FakeNoteNotifier(baseNoteState)),
+      ],
+      child: MaterialApp(
+        home: Scaffold(body: SidePanelScreen(onClose: () {})),
+      ),
+    ));
+
+    await tester.longPress(find.text('My Folder'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Rename'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'Work');
+    await tester.tap(find.text('Rename'));
+    await tester.pumpAndSettle();
+
+    expect(folderNotifier.renamedFolderId, 'folder-1');
+    expect(folderNotifier.renamedFolderNewName, 'Work');
   });
 
   testWidgets('Move to... opens the folder picker', (tester) async {

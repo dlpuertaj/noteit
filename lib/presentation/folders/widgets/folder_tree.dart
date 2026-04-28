@@ -15,6 +15,7 @@ class FolderTree extends StatelessWidget {
     required this.onDeleteNote,
     required this.onMoveNote,
     required this.onDeleteFolder,
+    required this.onRenameFolder,
   });
 
   final List<Folder> folders;
@@ -26,6 +27,7 @@ class FolderTree extends StatelessWidget {
   final void Function(String noteId) onMoveNote;
   final void Function(String folderId, DeleteFolderAction action)
       onDeleteFolder;
+  final void Function(String folderId, String newName) onRenameFolder;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class FolderTree extends StatelessWidget {
           onDeleteNote: onDeleteNote,
           onMoveNote: onMoveNote,
           onDeleteFolder: (action) => onDeleteFolder(folder.id, action),
+          onRenameFolder: (newName) => onRenameFolder(folder.id, newName),
         );
       }).toList(),
     );

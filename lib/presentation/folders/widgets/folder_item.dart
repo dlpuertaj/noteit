@@ -15,6 +15,7 @@ class FolderItem extends StatelessWidget {
     required this.onDeleteNote,
     required this.onMoveNote,
     required this.onDeleteFolder,
+    required this.onRenameFolder,
   });
 
   final Folder folder;
@@ -25,6 +26,7 @@ class FolderItem extends StatelessWidget {
   final void Function(String noteId) onDeleteNote;
   final void Function(String noteId) onMoveNote;
   final void Function(DeleteFolderAction action) onDeleteFolder;
+  final void Function(String newName) onRenameFolder;
 
   Future<void> _showFolderContextMenu(
       BuildContext context, Offset position) async {
@@ -39,9 +41,38 @@ class FolderItem extends StatelessWidget {
         position.dy,
       ),
       items: const [
+        PopupMenuItem(value: 'rename', child: Text('Rename')),
         PopupMenuItem(value: 'delete', child: Text('Delete')),
       ],
     );
+
+    if (!context.mounted) return;
+
+    if (result == 'rename') {
+      final controller = TextEditingController(text: folder.name);
+      final newName = await showDialog<String>(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Rename folder'),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            decoration: const InputDecoration(hintText: 'Folder name'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(controller.text.trim()),
+              child: const Text('Rename'),
+            ),
+          ],
+        ),
+      );
+      if (newName != null && newName.isNotEmpty) onRenameFolder(newName);
+    }
 
     if (!context.mounted) return;
 

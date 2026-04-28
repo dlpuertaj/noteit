@@ -109,9 +109,15 @@ class SidePanelScreen extends ConsumerWidget {
                     ),
                   );
                 },
-                onDeleteFolder: (folderId, action) => ref
+                onDeleteFolder: (folderId, action) async {
+                  await ref
+                      .read(folderProvider.notifier)
+                      .deleteFolder(folderId, action);
+                  await ref.read(noteProvider.notifier).refreshNotes();
+                },
+                onRenameFolder: (folderId, newName) => ref
                     .read(folderProvider.notifier)
-                    .deleteFolder(folderId, action),
+                    .renameFolder(folderId, newName),
               ),
             ),
             const Divider(height: 1),
