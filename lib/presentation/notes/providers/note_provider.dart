@@ -114,7 +114,17 @@ class NoteNotifier extends Notifier<NoteState> {
     }
   }
 
+  Future<void> refreshNotes() async {
+    final notes = await ref.read(_getAllNotesProvider).execute();
+    final current = state.currentNote;
+    final updated = current == null
+        ? null
+        : notes.firstWhere((n) => n.id == current.id, orElse: () => current);
+    state = NoteState(currentNote: updated, allNotes: notes);
+  }
+
   Future<void> deleteNoteById(String noteId) async {
+    _debounceTimer?.cancel();
     await ref.read(_deleteNoteProvider).execute(noteId);
     final remaining = state.allNotes.where((n) => n.id != noteId).toList();
     if (state.currentNote?.id == noteId) {
