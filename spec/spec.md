@@ -105,9 +105,9 @@ Two system folders are created automatically on first app launch and always exis
 | Button | Action |
 |---|---|
 | Side Panel button | Opens the Side Panel |
+| Settings button | Navigates to the Settings Screen |
 | Search button | Replaces this screen with the Search Results screen |
 | Export button | Opens the Export Screen |
-| Settings button | Navigates to the Settings Screen |
 | Three-dot menu | Shows options: **Delete note** |
 
 **Three-dot menu — Delete note:**
@@ -132,17 +132,22 @@ Two system folders are created automatically on first app launch and always exis
 | New Note button | Always visible | Creates a new note in the currently selected folder. If no folder is selected, note goes to Inbox. |
 | New Folder button | Always visible | Creates a new folder. If a folder is selected, the new folder is created inside it (if depth allows). If no folder is selected or the selected folder is at max depth, the new folder is created at root. |
 
-**Tap-hold (1 second) on a folder or note:**
-- Shows a context menu with: **Delete** and (for notes only) **Move to...**
-- Tapping **Move to...** on a note opens a folder picker showing the full folder tree. The user selects a destination folder and the note is moved immediately.
-- The folder picker shows all folders including system folders (Inbox, Stash) as valid destinations.
-- Tapping Delete on a **note** shows: "Delete this note? This cannot be undone." Confirming deletes permanently.
+**Tap-hold (1 second) on a folder:**
+- Shows a context menu with: **Delete** and **Rename...**
 - Tapping Delete on a **folder:**
   - If the folder is empty: deletes immediately, no prompt.
   - If the folder contains notes (at any nesting level): shows prompt — "This folder contains X notes. What do you want to do with them?" with two options:
     - **Move to Stash** — moves all notes to the Stash folder, then deletes the folder.
     - **Delete permanently** — deletes all notes and the folder permanently.
 - System folders (Inbox, Stash) must not show a Delete option on tap-hold.
+
+
+**Tap-hold (1 second) on a note:**
+- Shows a context menu with: **Delete** and **Move to...**
+- Tapping **Move to...** on a note opens a folder picker showing the full folder tree. The user selects a destination folder and the note is moved immediately.
+  - The folder picker shows all folders including system folders (Inbox, Stash) as valid destinations.
+- Tapping Delete on a **note** shows: "Delete this note? This cannot be undone." Confirming deletes the note permanently.
+
 
 ---
 
@@ -177,7 +182,7 @@ Two system folders are created automatically on first app launch and always exis
 
 ### 3.5 Settings Screen
 
-- Navigated to from the Note Editor.
+- Navigated to from the Note Editor via the Settings button, located in the top bar alongside the Side Panel button.
 - Contains one setting:
 
 | Setting | Type | Default | Constraint |
