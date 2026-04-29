@@ -274,3 +274,52 @@ For each feature: write widget test (red) → implement provider → implement s
 - [x] **T-402** Verify Side Panel is wired as an overlay inside `NoteEditorScreen` (not a separate route), per the navigation spec.
 - [x] **T-403** Run `flutter analyze` — zero errors and zero warnings.
 - [x] **T-404** Run `flutter test` — all tests pass.
+
+---
+
+## Phase 6 — Bug Fixes & Enhancements
+
+### 6.1 Move to... in Note Editor three-dot menu
+
+- [ ] **T-500** Add `onMoveNote` callback to `NoteThreeDotMenu` widget. Add "Move to..." as a second menu item. Existing "Delete note" behavior unchanged.
+- [ ] **T-501** Wire `onMoveNote` in `NoteEditorScreen` — reads `currentNote.id` from `noteProvider`, pushes the `/folders/picker` route passing the note id.
+- [ ] **T-502** Update widget test in `test/presentation/notes/note_editor_screen_test.dart` — add test: three-dot menu contains "Move to..."; tapping it opens the folder picker.
+
+### 6.2 Undo and Redo
+
+- [ ] **T-503** Create `NoteEditingToolbar` widget in `lib/presentation/notes/widgets/note_editing_toolbar.dart` — a `Row` with Undo and Redo `IconButton`s. Accepts two `UndoHistoryController`s (title, body) and disables the respective button when history is empty.
+- [ ] **T-504** Add `UndoHistoryController` to `NoteTitleField` and `NoteBodyField` — pass controllers up to `NoteEditorScreen` so `NoteEditingToolbar` can observe them.
+- [ ] **T-505** Integrate `NoteEditingToolbar` into `NoteEditorScreen` — place it between the AppBar and `NoteTitleField`.
+- [ ] **T-506** Write widget test for `NoteEditingToolbar` — test cases: Undo button is disabled when history is empty; Undo button is enabled after text is typed; tapping Undo reverts the last change; same for Redo.
+
+### 6.3 Bug — Subfolder creation
+
+- [ ] **T-507** Investigate and fix: tapping a depth-1 user folder then pressing "New Folder" should create a subfolder inside it. Trace through `FolderNotifier.selectFolder` → `_showNewFolderDialog` → `CreateFolder.execute` and find where the parentId is lost or the depth check fails.
+- [ ] **T-508** Add or update widget test in `test/presentation/folders/side_panel_screen_test.dart` to cover subfolder creation: select a user folder, tap "New Folder", confirm → `createdFolderParentId` equals the selected folder's id.
+
+### 6.4 Folder selection highlight
+
+- [ ] **T-509** Add `isSelected` parameter to `FolderItem`. Apply a full-row highlight color (e.g. `Theme.of(context).colorScheme.primaryContainer`) to the `ListTile` when `isSelected` is true.
+- [ ] **T-510** Pass `selectedFolderId` from `FolderTree` down to each `FolderItem` so it can compute `isSelected`.
+- [ ] **T-511** Update `FolderTree` constructor to accept `selectedFolderId` and thread it to `FolderItem`.
+- [ ] **T-512** Update `SidePanelScreen` to pass `folderState.selectedFolderId` to `FolderTree`.
+- [ ] **T-513** Update widget test to cover: tapping a folder highlights that folder's row; other folders are not highlighted.
+
+### 6.5 Bug — Keyboard stays open when side panel is opened
+
+- [ ] **T-514** In `NoteEditorScreen`, call `FocusManager.instance.primaryFocus?.unfocus()` when the Side Panel button is tapped (before setting `_isSidePanelOpen = true`).
+- [ ] **T-515** In `SidePanelScreen`, wrap `onFolderTap` and `onNoteSelected` callbacks to also call `FocusManager.instance.primaryFocus?.unfocus()` before executing the original callback.
+
+### 6.6 Folder hierarchy lines
+
+- [ ] **T-516** In `FolderItem`, when `folder.depth > 1`, draw a vertical line on the left side of the tile using a `Container` with a left border or a `CustomPaint` decoration to indicate it is a child of a parent folder.
+- [ ] **T-517** Adjust the indent in `FolderTree` so subfolder items are indented relative to their parent and the hierarchy line aligns correctly.
+
+### 6.7 Bug — Delete note from side panel creates Untitled when no notes remain
+
+- [ ] **T-518** Verify `NoteNotifier.deleteNoteById` correctly handles the zero-remaining-notes case: ensure the newly created empty note is the current note and allNotes is updated atomically. Add a unit/widget test for this path if not already covered.
+
+### 6.8 Regression check
+
+- [ ] **T-519** Run `flutter analyze` — zero errors and zero warnings.
+- [ ] **T-520** Run `flutter test` — all tests pass.

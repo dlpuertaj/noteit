@@ -104,16 +104,29 @@ Two system folders are created automatically on first app launch and always exis
 **Action buttons on this screen:**
 | Button | Action |
 |---|---|
-| Side Panel button | Opens the Side Panel |
+| Side Panel button | Opens the Side Panel. Dismisses the software keyboard if open. |
 | Settings button | Navigates to the Settings Screen |
 | Search button | Replaces this screen with the Search Results screen |
 | Export button | Opens the Export Screen |
-| Three-dot menu | Shows options: **Delete note** |
+| Three-dot menu | Shows options: **Delete note**, **Move to...** |
 
 **Three-dot menu — Delete note:**
 - Tapping "Delete note" shows a confirmation dialog: "Delete this note? This cannot be undone."
 - Confirming deletes the note permanently.
 - After deletion, the app opens the next available note, or creates a new empty note if none exist.
+
+**Three-dot menu — Move to...:**
+- Tapping "Move to..." opens the folder picker showing the full folder tree.
+- The user selects a destination folder and the note is moved immediately.
+- The folder picker shows all folders including system folders (Inbox, Stash) as valid destinations.
+
+**Undo and Redo:**
+- The Note Editor provides an **Undo** button and a **Redo** button in a toolbar row displayed between the AppBar and the note title field.
+- Undo reverses the last text change in the focused field (title or body).
+- Redo reapplies the last undone change.
+- Each field (title, body) maintains its own independent undo/redo history.
+- Buttons are visually disabled when there is nothing to undo or redo respectively.
+- On devices with a hardware keyboard, Ctrl+Z triggers Undo and Ctrl+Y triggers Redo.
 
 ---
 
@@ -132,6 +145,17 @@ Two system folders are created automatically on first app launch and always exis
 | New Note button | Always visible | Creates a new note in the currently selected folder. If no folder is selected, note goes to Inbox. |
 | New Folder button | Always visible | Creates a new folder. If a folder is selected, the new folder is created inside it (if depth allows). If no folder is selected or the selected folder is at max depth, the new folder is created at root. |
 
+**Keyboard dismissal:**
+- Opening the Side Panel dismisses the software keyboard.
+- Tapping any folder row or note row inside the Side Panel also dismisses the software keyboard.
+
+**Folder selection:**
+- Tapping a folder selects it and expands it to show its notes. Tapping again collapses it.
+- The selected folder row is highlighted across its full width to indicate selection.
+
+**Folder hierarchy lines:**
+- Subfolders are displayed with a vertical line connecting them to their parent folder, making the tree structure visually clear.
+
 **Tap-hold (1 second) on a folder:**
 - Shows a context menu with: **Delete** and **Rename...**
 - Tapping Delete on a **folder:**
@@ -141,12 +165,12 @@ Two system folders are created automatically on first app launch and always exis
     - **Delete permanently** — deletes all notes and the folder permanently.
 - System folders (Inbox, Stash) must not show a Delete option on tap-hold.
 
-
 **Tap-hold (1 second) on a note:**
 - Shows a context menu with: **Delete** and **Move to...**
 - Tapping **Move to...** on a note opens a folder picker showing the full folder tree. The user selects a destination folder and the note is moved immediately.
   - The folder picker shows all folders including system folders (Inbox, Stash) as valid destinations.
 - Tapping Delete on a **note** shows: "Delete this note? This cannot be undone." Confirming deletes the note permanently.
+- After deleting a note from the side panel, the editor loads the next available note. If no notes remain, a new empty note is created automatically (same rule as section 3.1).
 
 
 ---
@@ -222,6 +246,9 @@ Note Editor
 | User tries to create a folder at max depth | The New Folder button must not be offered for folders at the configured max depth. |
 | User searches with an empty query | No results are shown. The "No notes found." message is not shown either — the results area is blank. |
 | User deletes the note currently open in the editor | The next available note is loaded. If none exist, a new empty note is created. |
+| User deletes the last note from the side panel | Same as above — a new empty note is created and opened in the editor. |
+| User taps Undo with nothing to undo | The Undo button is disabled; no action occurs. |
+| User taps Redo with nothing to redo | The Redo button is disabled; no action occurs. |
 | User renames a folder to "Inbox" or "Stash" | The app must reject the name and show an error: "This name is reserved." |
 | Download fails (e.g. storage permission denied) | The app shows an error message: "Could not save file. Please check storage permissions." |
 | Note title is left empty | Title defaults to "Untitled" on auto-save. |
