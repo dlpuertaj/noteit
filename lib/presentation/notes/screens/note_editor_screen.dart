@@ -81,10 +81,21 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
       children: [
         Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              tooltip: 'Open side panel',
-              icon: const Icon(Icons.menu),
-              onPressed: () => setState(() => _isSidePanelOpen = true),
+            automaticallyImplyLeading: false,
+            leadingWidth: 96,
+            leading: Row(
+              children: [
+                IconButton(
+                  tooltip: 'Open side panel',
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => setState(() => _isSidePanelOpen = true),
+                ),
+                IconButton(
+                  tooltip: 'Settings',
+                  icon: const Icon(Icons.settings),
+                  onPressed: () => context.go('/settings'),
+                ),
+              ],
             ),
             actions: [
               IconButton(
@@ -96,11 +107,6 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                 tooltip: 'Export',
                 icon: const Icon(Icons.ios_share),
                 onPressed: () => context.go('/export'),
-              ),
-              IconButton(
-                tooltip: 'Settings',
-                icon: const Icon(Icons.settings),
-                onPressed: () => context.go('/settings'),
               ),
               NoteThreeDotMenu(onDeleteNote: _confirmDelete),
             ],
