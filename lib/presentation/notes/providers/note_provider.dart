@@ -124,7 +124,7 @@ class NoteNotifier extends Notifier<NoteState> {
   }
 
   Future<void> deleteNoteById(String noteId) async {
-    _debounceTimer?.cancel();
+    if (state.currentNote?.id == noteId) _debounceTimer?.cancel();
     await ref.read(_deleteNoteProvider).execute(noteId);
     final remaining = state.allNotes.where((n) => n.id != noteId).toList();
     if (state.currentNote?.id == noteId) {

@@ -71,9 +71,13 @@ class SidePanelScreen extends ConsumerWidget {
                 folders: folderState.folders,
                 allNotes: allNotes,
                 expandedFolderIds: folderState.expandedFolderIds,
-                onFolderTap: (id) =>
-                    ref.read(folderProvider.notifier).selectFolder(id),
+                selectedFolderId: folderState.selectedFolderId,
+                onFolderTap: (id) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  ref.read(folderProvider.notifier).selectFolder(id);
+                },
                 onNoteSelected: (noteId) async {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   await ref.read(noteProvider.notifier).loadNote(noteId);
                   onClose();
                 },
