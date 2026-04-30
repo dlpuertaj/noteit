@@ -9,7 +9,9 @@ class FolderItem extends StatelessWidget {
     super.key,
     required this.folder,
     required this.notes,
+    required this.childItems,
     required this.isExpanded,
+    required this.isSelected,
     required this.onTap,
     required this.onNoteSelected,
     required this.onDeleteNote,
@@ -20,7 +22,9 @@ class FolderItem extends StatelessWidget {
 
   final Folder folder;
   final List<Note> notes;
+  final List<Widget> childItems;
   final bool isExpanded;
+  final bool isSelected;
   final VoidCallback onTap;
   final void Function(String noteId) onNoteSelected;
   final void Function(String noteId) onDeleteNote;
@@ -65,7 +69,8 @@ class FolderItem extends StatelessWidget {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(controller.text.trim()),
+              onPressed: () =>
+                  Navigator.of(context).pop(controller.text.trim()),
               child: const Text('Rename'),
             ),
           ],
@@ -109,36 +114,57 @@ class FolderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onLongPressStart: (details) =>
-                _showFolderContextMenu(context, details.globalPosition),
-            child: ListTile(
-              leading: Icon(isExpanded ? Icons.folder_open : Icons.folder),
-              title: Text(folder.name),
-              onTap: onTap,
+    final content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onLongPressStart: (details) =>
+              _showFolderContextMenu(context, details.globalPosition),
+          child: ListTile(
+            tileColor: isSelected
+                ? Theme.of(context)
+                    .colorScheme
+                    .primaryContainer
+                    .withValues(alpha: 0.5)
+                : null,
+            leading: Icon(isExpanded ? Icons.folder_open : Icons.folder),
+            title: Text(folder.name),
+            onTap: onTap,
+          ),
+        ),
+        if (isExpanded)
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Column(
+              children: [
+                ...childItems,
+                ...notes.map((note) => NoteItem(
+                      note: note,
+                      onTap: () => onNoteSelected(note.id),
+                      onDelete: () => onDeleteNote(note.id),
+                      onMove: () => onMoveNote(note.id),
+                    )),
+              ],
             ),
           ),
-          if (isExpanded)
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                children: notes
-                    .map((note) => NoteItem(
-                          note: note,
-                          onTap: () => onNoteSelected(note.id),
-                          onDelete: () => onDeleteNote(note.id),
-                          onMove: () => onMoveNote(note.id),
-                        ))
-                    .toList(),
+      ],
+    );
+
+    return Material(
+      type: MaterialType.transparency,
+      child: folder.depth > 1
+          ? Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 2,
+                  ),
+                ),
               ),
-            ),
-        ],
-      ),
+              child: content,
+            )
+          : content,
     );
   }
 }

@@ -185,11 +185,18 @@ Riverpod providers sit between the UI and the domain layer. They hold state and 
 
 | Screen | Key Widgets |
 |---|---|
-| `NoteEditorScreen` | `NoteTitleField`, `NoteBodyField`, `NoteThreeDotMenu` |
+| `NoteEditorScreen` | `NoteTitleField`, `NoteBodyField`, `NoteThreeDotMenu`, `NoteEditingToolbar` |
 | `SidePanelScreen` | `FolderTree`, `FolderItem`, `NoteItem`, `FolderPicker` |
 | `SearchResultsScreen` | `SearchBar`, `SearchResultItem` |
 | `ExportBottomSheet` | Inline — no sub-widgets needed |
 | `SettingsScreen` | Inline — no sub-widgets needed |
+
+**Widget notes:**
+- `NoteThreeDotMenu` — exposes callbacks for both `onDeleteNote` and `onMoveNote`.
+- `NoteEditingToolbar` — a thin row between the AppBar and the title field containing Undo and Redo buttons. Each button receives an `UndoHistoryController` (one per text field) and is disabled when the respective history is empty.
+- `FolderItem` — accepts an `isSelected` boolean; highlights the full tile when selected. Draws a vertical hierarchy line on the left edge when it is a subfolder (depth > 1).
+- `FolderTree` — passes `selectedFolderId` down to each `FolderItem` so it can self-highlight.
+- `SidePanelScreen` — calls `FocusManager.instance.primaryFocus?.unfocus()` when the panel opens and on every folder/note tap.
 
 ---
 

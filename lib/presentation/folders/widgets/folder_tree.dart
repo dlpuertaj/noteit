@@ -10,6 +10,7 @@ class FolderTree extends StatelessWidget {
     required this.folders,
     required this.allNotes,
     required this.expandedFolderIds,
+    required this.selectedFolderId,
     required this.onFolderTap,
     required this.onNoteSelected,
     required this.onDeleteNote,
@@ -21,36 +22,44 @@ class FolderTree extends StatelessWidget {
   final List<Folder> folders;
   final List<Note> allNotes;
   final Set<String> expandedFolderIds;
+  final String? selectedFolderId;
   final void Function(String folderId) onFolderTap;
   final void Function(String noteId) onNoteSelected;
   final void Function(String noteId) onDeleteNote;
   final void Function(String noteId) onMoveNote;
-  final void Function(String folderId, DeleteFolderAction action)
-      onDeleteFolder;
+  final void Function(String folderId, DeleteFolderAction action) onDeleteFolder;
   final void Function(String folderId, String newName) onRenameFolder;
+
+  Widget _buildFolderItem(Folder folder) {
+    final notes = allNotes.where((n) => n.folderId == folder.id).toList();
+    final children = folders.where((f) => f.parentId == folder.id).toList();
+    final childItems = children.map(_buildFolderItem).toList();
+
+    return FolderItem(
+      key: ValueKey(folder.id),
+      folder: folder,
+      notes: notes,
+      childItems: childItems,
+      isExpanded: expandedFolderIds.contains(folder.id),
+      isSelected: folder.id == selectedFolderId,
+      onTap: () => onFolderTap(folder.id),
+      onNoteSelected: onNoteSelected,
+      onDeleteNote: onDeleteNote,
+      onMoveNote: onMoveNote,
+      onDeleteFolder: (action) => onDeleteFolder(folder.id, action),
+      onRenameFolder: (newName) => onRenameFolder(folder.id, newName),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final systemFolders = folders.where((f) => f.isSystem).toList();
-    final userFolders = folders.where((f) => !f.isSystem).toList();
+    final rootFolders = folders.where((f) => f.parentId == null).toList();
+    final systemFolders = rootFolders.where((f) => f.isSystem).toList();
+    final userFolders = rootFolders.where((f) => !f.isSystem).toList();
     final ordered = [...systemFolders, ...userFolders];
 
     return ListView(
-      children: ordered.map((folder) {
-        final notes =
-            allNotes.where((n) => n.folderId == folder.id).toList();
-        return FolderItem(
-          folder: folder,
-          notes: notes,
-          isExpanded: expandedFolderIds.contains(folder.id),
-          onTap: () => onFolderTap(folder.id),
-          onNoteSelected: onNoteSelected,
-          onDeleteNote: onDeleteNote,
-          onMoveNote: onMoveNote,
-          onDeleteFolder: (action) => onDeleteFolder(folder.id, action),
-          onRenameFolder: (newName) => onRenameFolder(folder.id, newName),
-        );
-      }).toList(),
+      children: ordered.map(_buildFolderItem).toList(),
     );
   }
 }
