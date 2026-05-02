@@ -30,6 +30,7 @@
 - A note must always belong to exactly one folder.
 - A note with no explicit folder selection must be assigned to Inbox.
 - A note's title defaults to "Untitled" if the user leaves the title field empty when navigating away.
+- Note titles must be unique within the same folder. If an auto-saved title would duplicate an existing note's title in the same folder, the app automatically appends a number suffix (e.g. "Title (2)", "Title (3)") until the title is unique.
 
 ---
 
@@ -50,6 +51,7 @@
 - Creating a folder inside a depth-2 folder is forbidden. The UI must not offer this option.
 - The maximum allowed depth is configurable in Settings (default: 2). The app must enforce the configured limit.
 - The names "Inbox" and "Stash" are reserved for system folders and must not be usable for user-created folders.
+- Folder names must be unique within the same parent (same `parentId`). Duplicate names at the same level are rejected with an error: "A folder with this name already exists here."
 
 ---
 
@@ -100,6 +102,7 @@ Two system folders are created automatically on first app launch and always exis
 - On first launch (no notes exist), the editor opens empty and ready to write.
 - On subsequent launches, the editor reopens the last active note.
 - If no notes exist, a new empty note is created automatically on launch.
+- While notes are loading on startup (database not yet ready), the editor shows a centered loading indicator instead of blank fields.
 
 **Action buttons on this screen:**
 | Button | Action |
@@ -159,8 +162,8 @@ Two system folders are created automatically on first app launch and always exis
 **Tap-hold (1 second) on a folder:**
 - Shows a context menu with: **Delete** and **Rename...**
 - Tapping Delete on a **folder:**
-  - If the folder is empty: deletes immediately, no prompt.
-  - If the folder contains notes (at any nesting level): shows prompt — "This folder contains X notes. What do you want to do with them?" with two options:
+  - If the folder is empty (no direct notes and no notes in any subfolder): deletes immediately, no prompt.
+  - If the folder contains notes at any nesting level: the count shown in the prompt includes all notes inside the folder and all of its subfolders. Shows prompt — "This folder contains X notes. What do you want to do with them?" with two options:
     - **Move to Stash** — moves all notes to the Stash folder, then deletes the folder.
     - **Delete permanently** — deletes all notes and the folder permanently.
 - System folders (Inbox, Stash) must not show a Delete option on tap-hold.
@@ -213,7 +216,7 @@ Two system folders are created automatically on first app launch and always exis
 |---|---|---|---|
 | Maximum folder depth | Integer selector | 2 | Min: 1, Max: 5 |
 
-- Changing the max folder depth takes effect immediately.
+- Changing the max folder depth takes effect immediately without requiring an app restart.
 - If the new max depth is lower than the current folder structure, existing folders that exceed the new limit are **not** automatically deleted — the limit only prevents new folders from being created beyond it.
 - A back button returns to the Note Editor.
 
@@ -250,5 +253,9 @@ Note Editor
 | User taps Undo with nothing to undo | The Undo button is disabled; no action occurs. |
 | User taps Redo with nothing to redo | The Redo button is disabled; no action occurs. |
 | User renames a folder to "Inbox" or "Stash" | The app must reject the name and show an error: "This name is reserved." |
+| User creates or renames a folder to a name already used by a sibling folder | The app rejects the name and shows: "A folder with this name already exists here." |
+| User types a note title that duplicates an existing note's title in the same folder | The title is auto-suffixed on save (e.g. "Title (2)") to maintain uniqueness. |
 | Download fails (e.g. storage permission denied) | The app shows an error message: "Could not save file. Please check storage permissions." |
 | Note title is left empty | Title defaults to "Untitled" on auto-save. |
+| App is loading notes on startup | A centered loading indicator is shown until the first note is ready. |
+| User changes max folder depth in Settings | The new limit applies immediately to folder creation without restarting the app. |
