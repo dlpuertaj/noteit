@@ -194,9 +194,19 @@ Riverpod providers sit between the UI and the domain layer. They hold state and 
 **Widget notes:**
 - `NoteThreeDotMenu` — exposes callbacks for both `onDeleteNote` and `onMoveNote`.
 - `NoteEditingToolbar` — a thin row between the AppBar and the title field containing Undo and Redo buttons. Each button receives an `UndoHistoryController` (one per text field) and is disabled when the respective history is empty.
-- `FolderItem` — accepts an `isSelected` boolean; highlights the full tile when selected. Draws a vertical hierarchy line on the left edge when it is a subfolder (depth > 1).
-- `FolderTree` — passes `selectedFolderId` down to each `FolderItem` so it can self-highlight.
+- `FolderItem` — accepts an `isSelected` boolean; highlights the full tile when selected. Draws a vertical hierarchy line on the left edge when it is a subfolder (depth > 1). Accepts a `totalNoteCount` integer that includes notes in all descendant subfolders — used for the delete-prompt count.
+- `FolderTree` — passes `selectedFolderId` down to each `FolderItem` so it can self-highlight. Computes `totalNoteCount` recursively for each folder including its subfolders before passing to `FolderItem`. Renders user-created folders first, then system folders (Inbox, Stash) at the bottom.
 - `SidePanelScreen` — calls `FocusManager.instance.primaryFocus?.unfocus()` when the panel opens and on every folder/note tap.
+- `NoteEditorScreen` — shows a centered `FlutterLogo` when `noteState.isLoading == true` (i.e. DB is still loading). Once a note is ready, renders the normal editor layout. The `FlutterLogo` is a placeholder for the eventual real app logo.
+
+**Provider notes:**
+- `folder_provider` — `FolderNotifier.build()` must call `ref.listen(settingsProvider, ...)` so that `state.maxFolderDepth` updates in real time when the user changes the setting. The direct DB read for settings in `_init()` is replaced by `ref.read(settingsProvider)`.
+- `note_provider` — `NoteState` carries a `isLoading` flag initialized to `true`. It is set to `false` after `_init()` completes. `NoteEditorScreen` observes this flag to decide whether to show the loading indicator.
+
+**Use-case notes:**
+- `CreateFolder` — after the existing reserved-name check, must also check that no sibling folder (same `parentId`) has the same name (case-insensitive). Throws `ArgumentError('A folder with this name already exists here.')` if duplicate.
+- `RenameFolder` — same uniqueness check as `CreateFolder`: no sibling may share the new name.
+- `EditNote` — after resolving the final title (trim, default to "Untitled"), must check `findByFolderId(note.folderId)` for a note with the same title. If a duplicate is found, appends " (2)", " (3)", etc. until the title is unique.
 
 ---
 

@@ -323,3 +323,53 @@ For each feature: write widget test (red) → implement provider → implement s
 
 - [ ] **T-519** Run `flutter analyze` — zero errors and zero warnings.
 - [ ] **T-520** Run `flutter test` — all tests pass.
+
+---
+
+## Phase 7 — Bug Fixes & Enhancements (Round 2)
+
+### 7.1 Bug — Black screen on startup
+
+- [ ] **T-600** Add `isLoading: bool` field to `NoteState` (default `true`). Initialize `NoteNotifier.build()` to return `NoteState(isLoading: true)`. Set `isLoading: false` after `_init()` completes and state is set.
+- [ ] **T-601** In `NoteEditorScreen.build()`, when `noteState.isLoading == true`, replace the body with a centered `FlutterLogo` (size ~96). This is a placeholder for the eventual real app logo.
+- [ ] **T-602** Write widget test: while `noteProvider` state has `isLoading: true`, the `FlutterLogo` is visible and the title/body fields are not rendered.
+- [ ] **T-603** Run `flutter test test/presentation/notes/` — all tests pass.
+
+### 7.2 Bug — Max folder depth setting not applied without restart
+
+- [ ] **T-604** In `FolderNotifier.build()`, add `ref.listen(settingsProvider, (_, maxDepth) { state = state.copyWith(maxFolderDepth: maxDepth); })`. Remove the direct DB read for settings from `_init()` and replace it with `ref.read(settingsProvider)`.
+- [ ] **T-605** Write widget test: change `settingsProvider` value, then verify `folderProvider.state.maxFolderDepth` reflects the new value without restarting.
+- [ ] **T-606** Run `flutter test test/presentation/` — all tests pass.
+
+### 7.3 Feature — Unique folder names per level
+
+- [ ] **T-607** In `CreateFolder.execute()`, after the reserved-name check, fetch all folders via `_folderRepo.findAll()` and check for a sibling (same `parentId`) with the same name (case-insensitive). Throw `ArgumentError('A folder with this name already exists here.')` if found.
+- [ ] **T-608** In `RenameFolder.execute()`, after fetching the folder, apply the same sibling uniqueness check for the new name.
+- [ ] **T-609** In `SidePanelScreen._showNewFolderDialog()`, wrap the `createFolder` call in try-catch; on `ArgumentError`, show an `AlertDialog` with the error message.
+- [ ] **T-610** In `FolderItem._showFolderContextMenu()` rename flow, wrap the `onRenameFolder` call in try-catch; on `ArgumentError`, show an `AlertDialog` with the error message.
+- [ ] **T-611** Update unit tests in `test/models/folder/use_cases/create_folder_test.dart` — add test: creating a folder with the same name as an existing sibling throws `ArgumentError`.
+- [ ] **T-612** Update unit tests in `test/models/folder/use_cases/rename_folder_test.dart` — add test: renaming a folder to the name of an existing sibling throws `ArgumentError`.
+- [ ] **T-613** Run `flutter test test/models/folder/` — all tests pass.
+
+### 7.4 Feature — Unique note titles per folder
+
+- [ ] **T-614** In `EditNote.execute()`, after resolving the final title, call `_noteRepo.findByFolderId(note.folderId)`. If another note (different id) has the same title, append " (2)", " (3)", etc. until the title is unique among notes in that folder.
+- [ ] **T-615** Update unit tests in `test/models/note/use_cases/edit_note_test.dart` — add test: saving a note with a title that matches a sibling note in the same folder appends " (2)"; if " (2)" is also taken, appends " (3)".
+- [ ] **T-616** Run `flutter test test/models/note/` — all tests pass.
+
+### 7.5 Bug — Folder delete prompt misses notes in subfolders
+
+- [ ] **T-617** Add `totalNoteCount: int` parameter to `FolderItem`. In `_showFolderContextMenu`, use `totalNoteCount` (not `notes.length`) to decide whether to show the delete prompt and what count to display.
+- [ ] **T-618** In `FolderTree._buildFolderItem()`, add a recursive `_totalNoteCount(String folderId)` helper that sums notes in the folder and all of its descendant folders. Pass the result as `totalNoteCount` to `FolderItem`.
+- [ ] **T-619** Write widget test: a folder that has zero direct notes but a subfolder with notes shows the delete prompt (not a silent delete) with the correct total count.
+- [ ] **T-620** Run `flutter test test/presentation/folders/` — all tests pass.
+
+### 7.6 Folder ordering — system folders at the bottom
+
+- [ ] **T-621** In `FolderTree.build()`, change the root-folder ordering so user-created folders are listed first and system folders (Inbox, Stash) appear at the bottom of the root list.
+- [ ] **T-622** Update widget test in `test/presentation/folders/side_panel_screen_test.dart` to assert: user folders appear above system folders; Inbox and Stash are at the bottom.
+
+### 7.7 Regression check
+
+- [ ] **T-623** Run `flutter analyze` — zero errors and zero warnings.
+- [ ] **T-624** Run `flutter test` — all tests pass.
