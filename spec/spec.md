@@ -68,7 +68,7 @@ Two system folders are created automatically on first app launch and always exis
 - System folders must not be deletable.
 - System folders must not be renameable.
 - System folders must not accept child folders (no subfolders inside Inbox or Stash).
-- System folders are always visible at the top of the root folder list.
+- System folders are always visible at the topbottom of the root folder list.
 
 ---
 
@@ -102,7 +102,7 @@ Two system folders are created automatically on first app launch and always exis
 - On first launch (no notes exist), the editor opens empty and ready to write.
 - On subsequent launches, the editor reopens the last active note.
 - If no notes exist, a new empty note is created automatically on launch.
-- While notes are loading on startup (database not yet ready), the editor shows a centered loading indicator instead of blank fields.
+- While notes are loading on startup (database not yet ready), the editor shows the app logo instead of blank fields.
 
 **Action buttons on this screen:**
 | Button | Action |
@@ -253,9 +253,8 @@ Note Editor
 | User taps Undo with nothing to undo | The Undo button is disabled; no action occurs. |
 | User taps Redo with nothing to redo | The Redo button is disabled; no action occurs. |
 | User renames a folder to "Inbox" or "Stash" | The app must reject the name and show an error: "This name is reserved." |
-| User creates or renames a folder to a name already used by a sibling folder | The app rejects the name and shows: "A folder with this name already exists here." |
 | User types a note title that duplicates an existing note's title in the same folder | The title is auto-suffixed on save (e.g. "Title (2)") to maintain uniqueness. |
 | Download fails (e.g. storage permission denied) | The app shows an error message: "Could not save file. Please check storage permissions." |
 | Note title is left empty | Title defaults to "Untitled" on auto-save. |
-| App is loading notes on startup | A centered loading indicator is shown until the first note is ready. |
+| App is loading notes on startup | A centered teh app logo is shown until the first note is ready. |
 | User changes max folder depth in Settings | The new limit applies immediately to folder creation without restarting the app. |
