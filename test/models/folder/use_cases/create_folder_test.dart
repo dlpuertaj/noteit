@@ -36,6 +36,7 @@ void main() {
       useCase = CreateFolder(repo);
       when(() => repo.insert(any())).thenAnswer((_) async {});
       when(() => repo.findById('parent-1')).thenAnswer((_) async => parentFolder);
+      when(() => repo.findAll()).thenAnswer((_) async => [parentFolder]);
     });
 
     test('root folder has depth 1 and parentId null', () async {
@@ -86,6 +87,52 @@ void main() {
         () => useCase.execute('Deep', parentId: 'parent-1', maxFolderDepth: 1),
         throwsA(isA<ArgumentError>()),
       );
+    });
+
+    test('throws ArgumentError when a sibling folder has the same name', () async {
+      final sibling = Folder(
+        id: 'sibling-1',
+        name: 'Personal',
+        parentId: null,
+        depth: 1,
+        isSystem: false,
+        createdAt: DateTime(2026),
+      );
+      when(() => repo.findAll()).thenAnswer((_) async => [parentFolder, sibling]);
+      expect(
+        () => useCase.execute('Personal', parentId: null, maxFolderDepth: 2),
+        throwsA(isA<ArgumentError>()),
+      );
+    });
+
+    test('sibling name check is case-insensitive', () async {
+      final sibling = Folder(
+        id: 'sibling-1',
+        name: 'Personal',
+        parentId: null,
+        depth: 1,
+        isSystem: false,
+        createdAt: DateTime(2026),
+      );
+      when(() => repo.findAll()).thenAnswer((_) async => [parentFolder, sibling]);
+      expect(
+        () => useCase.execute('PERSONAL', parentId: null, maxFolderDepth: 2),
+        throwsA(isA<ArgumentError>()),
+      );
+    });
+
+    test('same name allowed under different parent', () async {
+      final sibling = Folder(
+        id: 'sibling-1',
+        name: 'Personal',
+        parentId: 'parent-1',
+        depth: 2,
+        isSystem: false,
+        createdAt: DateTime(2026),
+      );
+      when(() => repo.findAll()).thenAnswer((_) async => [parentFolder, sibling]);
+      final created = await useCase.execute('Personal', parentId: null, maxFolderDepth: 2);
+      expect(created.name, 'Personal');
     });
   });
 }

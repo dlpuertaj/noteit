@@ -178,7 +178,7 @@ void main() {
     currentNote: inboxNote,
   );
 
-  testWidgets('Inbox and Stash appear at the top', (tester) async {
+  testWidgets('Inbox and Stash appear at the bottom', (tester) async {
     await tester.pumpWidget(_buildApp(
       folderState: baseFolderState,
       noteState: baseNoteState,
@@ -189,10 +189,10 @@ void main() {
 
     final inboxDy = tester.getTopLeft(find.text('Inbox')).dy;
     final myFolderDy = tester.getTopLeft(find.text('My Folder')).dy;
-    expect(inboxDy, lessThan(myFolderDy));
+    expect(inboxDy, greaterThan(myFolderDy));
   });
 
-  testWidgets('user folders appear below system folders', (tester) async {
+  testWidgets('user folders appear above system folders', (tester) async {
     await tester.pumpWidget(_buildApp(
       folderState: baseFolderState,
       noteState: baseNoteState,
@@ -201,7 +201,7 @@ void main() {
     expect(find.text('My Folder'), findsOneWidget);
     final stashDy = tester.getTopLeft(find.text('Stash')).dy;
     final myFolderDy = tester.getTopLeft(find.text('My Folder')).dy;
-    expect(stashDy, lessThan(myFolderDy));
+    expect(stashDy, greaterThan(myFolderDy));
   });
 
   testWidgets('tapping a folder reveals its notes', (tester) async {

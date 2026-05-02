@@ -37,6 +37,7 @@ void main() {
       useCase = EditNote(repo);
       when(() => repo.findById('note-1')).thenAnswer((_) async => existing);
       when(() => repo.update(any())).thenAnswer((_) async {});
+      when(() => repo.findByFolderId(any())).thenAnswer((_) async => [existing]);
     });
 
     test('title is updated', () async {
@@ -63,6 +64,70 @@ void main() {
       await useCase.execute('note-1', '   ', 'Body');
       final captured = verify(() => repo.update(captureAny())).captured;
       expect((captured.first as Note).title, 'Untitled');
+    });
+
+    test('duplicate title in same folder is auto-suffixed with (2)', () async {
+      final sibling = Note(
+        id: 'note-2',
+        title: 'Shopping',
+        body: '',
+        folderId: kInboxFolderId,
+        createdAt: DateTime(2026),
+        updatedAt: DateTime(2026),
+      );
+      when(() => repo.findByFolderId(kInboxFolderId))
+          .thenAnswer((_) async => [existing, sibling]);
+      await useCase.execute('note-1', 'Shopping', 'Body');
+      final captured = verify(() => repo.update(captureAny())).captured;
+      expect((captured.first as Note).title, 'Shopping (2)');
+    });
+
+    test('if (2) is also taken, suffix increments to (3)', () async {
+      final sibling1 = Note(
+        id: 'note-2',
+        title: 'Shopping',
+        body: '',
+        folderId: kInboxFolderId,
+        createdAt: DateTime(2026),
+        updatedAt: DateTime(2026),
+      );
+      final sibling2 = Note(
+        id: 'note-3',
+        title: 'Shopping (2)',
+        body: '',
+        folderId: kInboxFolderId,
+        createdAt: DateTime(2026),
+        updatedAt: DateTime(2026),
+      );
+      when(() => repo.findByFolderId(kInboxFolderId))
+          .thenAnswer((_) async => [existing, sibling1, sibling2]);
+      await useCase.execute('note-1', 'Shopping', 'Body');
+      final captured = verify(() => repo.update(captureAny())).captured;
+      expect((captured.first as Note).title, 'Shopping (3)');
+    });
+
+    test('blank title duplicating Untitled is auto-suffixed', () async {
+      final sibling = Note(
+        id: 'note-2',
+        title: 'Untitled',
+        body: '',
+        folderId: kInboxFolderId,
+        createdAt: DateTime(2026),
+        updatedAt: DateTime(2026),
+      );
+      when(() => repo.findByFolderId(kInboxFolderId))
+          .thenAnswer((_) async => [existing, sibling]);
+      await useCase.execute('note-1', '', 'Body');
+      final captured = verify(() => repo.update(captureAny())).captured;
+      expect((captured.first as Note).title, 'Untitled (2)');
+    });
+
+    test('keeps current title if no duplicate exists', () async {
+      when(() => repo.findByFolderId(kInboxFolderId))
+          .thenAnswer((_) async => [existing]);
+      await useCase.execute('note-1', 'Unique Title', 'Body');
+      final captured = verify(() => repo.update(captureAny())).captured;
+      expect((captured.first as Note).title, 'Unique Title');
     });
   });
 }

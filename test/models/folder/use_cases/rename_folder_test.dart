@@ -46,6 +46,7 @@ void main() {
       when(() => repo.update(any())).thenAnswer((_) async {});
       when(() => repo.findById('folder-1')).thenAnswer((_) async => userFolder);
       when(() => repo.findById('inbox-id')).thenAnswer((_) async => systemFolder);
+      when(() => repo.findAll()).thenAnswer((_) async => [userFolder, systemFolder]);
     });
 
     test('renames a user folder successfully', () async {
@@ -73,6 +74,29 @@ void main() {
         () => useCase.execute('inbox-id', 'NewName'),
         throwsA(isA<ArgumentError>()),
       );
+    });
+
+    test('throws ArgumentError when a sibling folder has the new name', () async {
+      final sibling = Folder(
+        id: 'sibling-1',
+        name: 'Personal',
+        parentId: null,
+        depth: 1,
+        isSystem: false,
+        createdAt: DateTime(2026),
+      );
+      when(() => repo.findAll())
+          .thenAnswer((_) async => [userFolder, systemFolder, sibling]);
+      expect(
+        () => useCase.execute('folder-1', 'Personal'),
+        throwsA(isA<ArgumentError>()),
+      );
+    });
+
+    test('renaming to its own current name is allowed', () async {
+      // self-id is excluded from the duplicate check
+      await useCase.execute('folder-1', 'Work');
+      verify(() => repo.update(any())).called(1);
     });
   });
 }
