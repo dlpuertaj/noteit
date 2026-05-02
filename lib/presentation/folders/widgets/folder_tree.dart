@@ -28,7 +28,16 @@ class FolderTree extends StatelessWidget {
   final void Function(String noteId) onDeleteNote;
   final void Function(String noteId) onMoveNote;
   final void Function(String folderId, DeleteFolderAction action) onDeleteFolder;
-  final void Function(String folderId, String newName) onRenameFolder;
+  final Future<void> Function(String folderId, String newName) onRenameFolder;
+
+  int _totalNoteCount(String folderId) {
+    int count = allNotes.where((n) => n.folderId == folderId).length;
+    final children = folders.where((f) => f.parentId == folderId);
+    for (final child in children) {
+      count += _totalNoteCount(child.id);
+    }
+    return count;
+  }
 
   Widget _buildFolderItem(Folder folder) {
     final notes = allNotes.where((n) => n.folderId == folder.id).toList();
@@ -40,6 +49,7 @@ class FolderTree extends StatelessWidget {
       folder: folder,
       notes: notes,
       childItems: childItems,
+      totalNoteCount: _totalNoteCount(folder.id),
       isExpanded: expandedFolderIds.contains(folder.id),
       isSelected: folder.id == selectedFolderId,
       onTap: () => onFolderTap(folder.id),
@@ -56,7 +66,7 @@ class FolderTree extends StatelessWidget {
     final rootFolders = folders.where((f) => f.parentId == null).toList();
     final systemFolders = rootFolders.where((f) => f.isSystem).toList();
     final userFolders = rootFolders.where((f) => !f.isSystem).toList();
-    final ordered = [...systemFolders, ...userFolders];
+    final ordered = [...userFolders, ...systemFolders];
 
     return ListView(
       children: ordered.map(_buildFolderItem).toList(),

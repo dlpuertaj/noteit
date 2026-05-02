@@ -41,14 +41,25 @@ final _moveNoteToFolderProvider = Provider<MoveNoteToFolder>((ref) {
 });
 
 class NoteState {
-  const NoteState({this.currentNote, this.allNotes = const []});
+  const NoteState({
+    this.currentNote,
+    this.allNotes = const [],
+    this.isLoading = false,
+  });
 
   final Note? currentNote;
   final List<Note> allNotes;
+  final bool isLoading;
 
-  NoteState copyWith({Note? currentNote, List<Note>? allNotes}) => NoteState(
+  NoteState copyWith({
+    Note? currentNote,
+    List<Note>? allNotes,
+    bool? isLoading,
+  }) =>
+      NoteState(
         currentNote: currentNote ?? this.currentNote,
         allNotes: allNotes ?? this.allNotes,
+        isLoading: isLoading ?? this.isLoading,
       );
 }
 
@@ -59,7 +70,7 @@ class NoteNotifier extends Notifier<NoteState> {
   NoteState build() {
     ref.onDispose(() => _debounceTimer?.cancel());
     Future.microtask(_init);
-    return const NoteState();
+    return const NoteState(isLoading: true);
   }
 
   Future<void> _init() async {

@@ -10,6 +10,7 @@ class FolderItem extends StatelessWidget {
     required this.folder,
     required this.notes,
     required this.childItems,
+    required this.totalNoteCount,
     required this.isExpanded,
     required this.isSelected,
     required this.onTap,
@@ -23,6 +24,7 @@ class FolderItem extends StatelessWidget {
   final Folder folder;
   final List<Note> notes;
   final List<Widget> childItems;
+  final int totalNoteCount;
   final bool isExpanded;
   final bool isSelected;
   final VoidCallback onTap;
@@ -30,7 +32,7 @@ class FolderItem extends StatelessWidget {
   final void Function(String noteId) onDeleteNote;
   final void Function(String noteId) onMoveNote;
   final void Function(DeleteFolderAction action) onDeleteFolder;
-  final void Function(String newName) onRenameFolder;
+  final Future<void> Function(String newName) onRenameFolder;
 
   Future<void> _showFolderContextMenu(
       BuildContext context, Offset position) async {
@@ -76,21 +78,38 @@ class FolderItem extends StatelessWidget {
           ],
         ),
       );
-      if (newName != null && newName.isNotEmpty) onRenameFolder(newName);
+      if (newName != null && newName.isNotEmpty) {
+        try {
+          await onRenameFolder(newName);
+        } on ArgumentError catch (e) {
+          if (!context.mounted) return;
+          await showDialog<void>(
+            context: context,
+            builder: (_) => AlertDialog(
+              content: Text(e.message.toString()),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      }
     }
 
     if (!context.mounted) return;
 
     if (result == 'delete') {
-      final noteCount = notes.length;
-      if (noteCount == 0) {
+      if (totalNoteCount == 0) {
         onDeleteFolder(DeleteFolderAction.deletePermanently);
       } else {
         final action = await showDialog<DeleteFolderAction>(
           context: context,
           builder: (_) => AlertDialog(
             content: Text(
-              'This folder contains $noteCount note${noteCount == 1 ? '' : 's'}. '
+              'This folder contains $totalNoteCount note${totalNoteCount == 1 ? '' : 's'}. '
               'What do you want to do with them?',
             ),
             actions: [

@@ -9,8 +9,23 @@ class EditNote {
     final note = await _repo.findById(noteId);
     if (note == null) return;
     final trimmed = title.trim();
+    final base = trimmed.isEmpty ? 'Untitled' : trimmed;
+
+    final siblings = await _repo.findByFolderId(note.folderId);
+    final taken = siblings
+        .where((n) => n.id != noteId)
+        .map((n) => n.title)
+        .toSet();
+
+    String resolved = base;
+    int suffix = 2;
+    while (taken.contains(resolved)) {
+      resolved = '$base ($suffix)';
+      suffix++;
+    }
+
     await _repo.update(note.copyWith(
-      title: trimmed.isEmpty ? 'Untitled' : trimmed,
+      title: resolved,
       body: body,
       updatedAt: DateTime.now(),
     ));

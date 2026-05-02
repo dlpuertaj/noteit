@@ -8,6 +8,7 @@ import 'package:notes/models/folder/use_cases/delete_folder.dart';
 import 'package:notes/models/folder/use_cases/get_folders.dart';
 import 'package:notes/models/folder/use_cases/rename_folder.dart';
 import 'package:notes/presentation/notes/providers/note_provider.dart';
+import 'package:notes/presentation/settings/providers/settings_provider.dart';
 import 'package:notes/utils/constants.dart';
 
 final folderRepositoryProvider = Provider<FolderRepository>((ref) {
@@ -63,17 +64,16 @@ class FolderState {
 class FolderNotifier extends Notifier<FolderState> {
   @override
   FolderState build() {
+    ref.listen<int>(settingsProvider, (_, maxDepth) {
+      state = state.copyWith(maxFolderDepth: maxDepth);
+    });
     Future.microtask(_init);
     return const FolderState();
   }
 
   Future<void> _init() async {
     final folders = await ref.read(_getFoldersProvider).execute();
-    final db = await ref.read(appDatabaseProvider).database;
-    final rows = await db.query('settings', limit: 1);
-    final maxDepth = rows.isEmpty
-        ? kDefaultMaxFolderDepth
-        : rows.first['max_folder_depth'] as int;
+    final maxDepth = ref.read(settingsProvider);
     state = FolderState(folders: folders, maxFolderDepth: maxDepth);
   }
 

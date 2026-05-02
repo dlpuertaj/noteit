@@ -30,6 +30,14 @@ class CreateFolder {
       throw ArgumentError('Maximum folder depth exceeded.');
     }
 
+    final all = await _repo.findAll();
+    final hasDuplicate = all.any((f) =>
+        f.parentId == parentId &&
+        f.name.toLowerCase() == trimmed.toLowerCase());
+    if (hasDuplicate) {
+      throw ArgumentError('A folder with this name already exists here.');
+    }
+
     final folder = Folder(
       id: const Uuid().v4(),
       name: trimmed,

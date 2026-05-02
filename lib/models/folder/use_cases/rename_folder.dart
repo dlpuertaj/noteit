@@ -17,6 +17,15 @@ class RenameFolder {
       throw ArgumentError('This name is reserved.');
     }
 
+    final all = await _repo.findAll();
+    final hasDuplicate = all.any((f) =>
+        f.id != folder.id &&
+        f.parentId == folder.parentId &&
+        f.name.toLowerCase() == trimmed.toLowerCase());
+    if (hasDuplicate) {
+      throw ArgumentError('A folder with this name already exists here.');
+    }
+
     await _repo.update(folder.copyWith(name: trimmed));
   }
 }

@@ -50,9 +50,25 @@ class SidePanelScreen extends ConsumerWidget {
       }
     }
 
-    await ref
-        .read(folderProvider.notifier)
-        .createFolder(controller.text.trim(), parentId);
+    try {
+      await ref
+          .read(folderProvider.notifier)
+          .createFolder(controller.text.trim(), parentId);
+    } on ArgumentError catch (e) {
+      if (!context.mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: Text(e.message.toString()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
