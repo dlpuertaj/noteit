@@ -331,8 +331,8 @@ For each feature: write widget test (red) → implement provider → implement s
 ### 7.1 Bug — Black screen on startup
 
 - [ ] **T-600** Add `isLoading: bool` field to `NoteState` (default `true`). Initialize `NoteNotifier.build()` to return `NoteState(isLoading: true)`. Set `isLoading: false` after `_init()` completes and state is set.
-- [ ] **T-601** In `NoteEditorScreen.build()`, when `noteState.isLoading == true`, replace the body with a centered `CircularProgressIndicator`.
-- [ ] **T-602** Write widget test: while `noteProvider` state has `isLoading: true`, the loading indicator is visible and the title/body fields are not rendered.
+- [ ] **T-601** In `NoteEditorScreen.build()`, when `noteState.isLoading == true`, replace the body with a centered `FlutterLogo` (size ~96). This is a placeholder for the eventual real app logo.
+- [ ] **T-602** Write widget test: while `noteProvider` state has `isLoading: true`, the `FlutterLogo` is visible and the title/body fields are not rendered.
 - [ ] **T-603** Run `flutter test test/presentation/notes/` — all tests pass.
 
 ### 7.2 Bug — Max folder depth setting not applied without restart
@@ -364,7 +364,12 @@ For each feature: write widget test (red) → implement provider → implement s
 - [ ] **T-619** Write widget test: a folder that has zero direct notes but a subfolder with notes shows the delete prompt (not a silent delete) with the correct total count.
 - [ ] **T-620** Run `flutter test test/presentation/folders/` — all tests pass.
 
-### 7.6 Regression check
+### 7.6 Folder ordering — system folders at the bottom
 
-- [ ] **T-621** Run `flutter analyze` — zero errors and zero warnings.
-- [ ] **T-622** Run `flutter test` — all tests pass.
+- [ ] **T-621** In `FolderTree.build()`, change the root-folder ordering so user-created folders are listed first and system folders (Inbox, Stash) appear at the bottom of the root list.
+- [ ] **T-622** Update widget test in `test/presentation/folders/side_panel_screen_test.dart` to assert: user folders appear above system folders; Inbox and Stash are at the bottom.
+
+### 7.7 Regression check
+
+- [ ] **T-623** Run `flutter analyze` — zero errors and zero warnings.
+- [ ] **T-624** Run `flutter test` — all tests pass.

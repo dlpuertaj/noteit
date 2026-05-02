@@ -68,7 +68,7 @@ Two system folders are created automatically on first app launch and always exis
 - System folders must not be deletable.
 - System folders must not be renameable.
 - System folders must not accept child folders (no subfolders inside Inbox or Stash).
-- System folders are always visible at the topbottom of the root folder list.
+- System folders are always visible at the bottom of the root folder list.
 
 ---
 
@@ -102,7 +102,7 @@ Two system folders are created automatically on first app launch and always exis
 - On first launch (no notes exist), the editor opens empty and ready to write.
 - On subsequent launches, the editor reopens the last active note.
 - If no notes exist, a new empty note is created automatically on launch.
-- While notes are loading on startup (database not yet ready), the editor shows the app logo instead of blank fields.
+- While notes are loading on startup (database not yet ready), the editor shows the app logo (Flutter's default `FlutterLogo` widget for now, until a real app logo is added) instead of blank fields.
 
 **Action buttons on this screen:**
 | Button | Action |
@@ -137,7 +137,7 @@ Two system folders are created automatically on first app launch and always exis
 
 - Slides in from the left over the Note Editor.
 - Tapping outside the panel closes it.
-- Displays the full folder tree: system folders (Inbox, Stash) at the top, then user folders below.
+- Displays the full folder tree: user-created folders at the top, then system folders (Inbox, Stash) at the bottom.
 - Folders at depth 1 can be expanded to show their subfolders.
 - Tapping a folder shows the notes inside it within the panel.
 - Tapping a note in the panel opens it in the Note Editor and closes the panel.
@@ -256,5 +256,5 @@ Note Editor
 | User types a note title that duplicates an existing note's title in the same folder | The title is auto-suffixed on save (e.g. "Title (2)") to maintain uniqueness. |
 | Download fails (e.g. storage permission denied) | The app shows an error message: "Could not save file. Please check storage permissions." |
 | Note title is left empty | Title defaults to "Untitled" on auto-save. |
-| App is loading notes on startup | A centered teh app logo is shown until the first note is ready. |
+| App is loading notes on startup | A centered app logo (Flutter's default `FlutterLogo` for now) is shown until the first note is ready. |
 | User changes max folder depth in Settings | The new limit applies immediately to folder creation without restarting the app. |

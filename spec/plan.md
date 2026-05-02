@@ -195,9 +195,9 @@ Riverpod providers sit between the UI and the domain layer. They hold state and 
 - `NoteThreeDotMenu` — exposes callbacks for both `onDeleteNote` and `onMoveNote`.
 - `NoteEditingToolbar` — a thin row between the AppBar and the title field containing Undo and Redo buttons. Each button receives an `UndoHistoryController` (one per text field) and is disabled when the respective history is empty.
 - `FolderItem` — accepts an `isSelected` boolean; highlights the full tile when selected. Draws a vertical hierarchy line on the left edge when it is a subfolder (depth > 1). Accepts a `totalNoteCount` integer that includes notes in all descendant subfolders — used for the delete-prompt count.
-- `FolderTree` — passes `selectedFolderId` down to each `FolderItem` so it can self-highlight. Computes `totalNoteCount` recursively for each folder including its subfolders before passing to `FolderItem`.
+- `FolderTree` — passes `selectedFolderId` down to each `FolderItem` so it can self-highlight. Computes `totalNoteCount` recursively for each folder including its subfolders before passing to `FolderItem`. Renders user-created folders first, then system folders (Inbox, Stash) at the bottom.
 - `SidePanelScreen` — calls `FocusManager.instance.primaryFocus?.unfocus()` when the panel opens and on every folder/note tap.
-- `NoteEditorScreen` — shows a `CircularProgressIndicator` when `noteState.currentNote == null` (i.e. DB is still loading). Once a note is ready, renders the normal editor layout.
+- `NoteEditorScreen` — shows a centered `FlutterLogo` when `noteState.isLoading == true` (i.e. DB is still loading). Once a note is ready, renders the normal editor layout. The `FlutterLogo` is a placeholder for the eventual real app logo.
 
 **Provider notes:**
 - `folder_provider` — `FolderNotifier.build()` must call `ref.listen(settingsProvider, ...)` so that `state.maxFolderDepth` updates in real time when the user changes the setting. The direct DB read for settings in `_init()` is replaced by `ref.read(settingsProvider)`.
