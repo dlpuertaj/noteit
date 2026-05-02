@@ -109,6 +109,7 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen<NoteState>(noteProvider, (_, next) => _syncFromState(next));
+    final isLoading = ref.watch(noteProvider).isLoading;
 
     return Stack(
       children: [
@@ -150,39 +151,42 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
               ),
             ],
           ),
-          body: Column(
-            children: [
-              NoteEditingToolbar(
-                activeUndoNotifier: _activeUndoNotifier,
-                onUndo: () => _activeUndoNotifier.value.undo(),
-                onRedo: () => _activeUndoNotifier.value.redo(),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Column(
-                    children: [
-                      NoteTitleField(
-                        controller: _titleController,
-                        focusNode: _titleFocusNode,
-                        undoController: _titleUndoController,
-                        onChanged: _scheduleAutoSave,
-                      ),
-                      const SizedBox(height: 8),
-                      Expanded(
-                        child: NoteBodyField(
-                          controller: _bodyController,
-                          focusNode: _bodyFocusNode,
-                          undoController: _bodyUndoController,
-                          onChanged: _scheduleAutoSave,
+          body: isLoading
+              ? const Center(child: FlutterLogo(size: 96))
+              : Column(
+                  children: [
+                    NoteEditingToolbar(
+                      activeUndoNotifier: _activeUndoNotifier,
+                      onUndo: () => _activeUndoNotifier.value.undo(),
+                      onRedo: () => _activeUndoNotifier.value.redo(),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: Column(
+                          children: [
+                            NoteTitleField(
+                              controller: _titleController,
+                              focusNode: _titleFocusNode,
+                              undoController: _titleUndoController,
+                              onChanged: _scheduleAutoSave,
+                            ),
+                            const SizedBox(height: 8),
+                            Expanded(
+                              child: NoteBodyField(
+                                controller: _bodyController,
+                                focusNode: _bodyFocusNode,
+                                undoController: _bodyUndoController,
+                                onChanged: _scheduleAutoSave,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
         if (_isSidePanelOpen) ...[
           GestureDetector(
