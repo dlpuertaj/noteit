@@ -373,3 +373,11 @@ For each feature: write widget test (red) → implement provider → implement s
 
 - [x] **T-623** Run `flutter analyze` — zero errors and zero warnings.
 - [x] **T-624** Run `flutter test` — all tests pass.
+
+### 7.8 Bug — DeleteFolder ignores notes deeper than direct children
+
+- [x] **T-625** In `DeleteFolder.execute()`, replace the direct-children-only collection (`allFolders.where((f) => f.parentId == folderId)`) with a recursive walk that gathers every descendant folder id at any depth. Apply the chosen action (`moveToStash` / `deletePermanently`) to notes in every collected folder, then delete the descendant folders bottom-up before deleting the target folder itself.
+- [x] **T-626** Add a unit test in `test/models/folder/use_cases/delete_folder_test.dart` covering a depth-3 hierarchy (root → child → grandchild) where only the grandchild has notes. Asserts that `moveToStash` moves the grandchild's notes to Stash and that `deletePermanently` calls `deleteAllInFolder` for the grandchild.
+- [x] **T-627** Run `flutter test test/models/folder/use_cases/delete_folder_test.dart` — all tests pass.
+- [x] **T-628** Run `flutter analyze` — zero errors and zero warnings.
+- [x] **T-629** Run `flutter test` — all tests pass.
