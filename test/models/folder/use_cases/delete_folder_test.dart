@@ -111,5 +111,58 @@ void main() {
       verify(() => folderRepo.delete('sub-1')).called(1);
       verify(() => folderRepo.delete('folder-1')).called(1);
     });
+
+    test('notes in grandchild folders are moved to Stash when moveToStash is chosen', () async {
+      final child = Folder(
+        id: 'child-1', name: 'Child', parentId: 'folder-1',
+        depth: 2, isSystem: false, createdAt: DateTime(2026),
+      );
+      final grandchild = Folder(
+        id: 'grand-1', name: 'Grand', parentId: 'child-1',
+        depth: 3, isSystem: false, createdAt: DateTime(2026),
+      );
+      final grandNote = note.copyWith(id: 'note-3', folderId: 'grand-1');
+
+      when(() => folderRepo.findById('folder-1')).thenAnswer((_) async => userFolder);
+      when(() => folderRepo.findAll())
+          .thenAnswer((_) async => [userFolder, child, grandchild]);
+      when(() => noteRepo.findByFolderId('folder-1')).thenAnswer((_) async => []);
+      when(() => noteRepo.findByFolderId('child-1')).thenAnswer((_) async => []);
+      when(() => noteRepo.findByFolderId('grand-1')).thenAnswer((_) async => [grandNote]);
+
+      await useCase.execute('folder-1', DeleteFolderAction.moveToStash);
+
+      verify(() => noteRepo.moveAllToFolder(['note-3'], kStashFolderId)).called(1);
+      verify(() => folderRepo.delete('grand-1')).called(1);
+      verify(() => folderRepo.delete('child-1')).called(1);
+      verify(() => folderRepo.delete('folder-1')).called(1);
+    });
+
+    test('notes in grandchild folders are deleted when deletePermanently is chosen', () async {
+      final child = Folder(
+        id: 'child-1', name: 'Child', parentId: 'folder-1',
+        depth: 2, isSystem: false, createdAt: DateTime(2026),
+      );
+      final grandchild = Folder(
+        id: 'grand-1', name: 'Grand', parentId: 'child-1',
+        depth: 3, isSystem: false, createdAt: DateTime(2026),
+      );
+      final grandNote = note.copyWith(id: 'note-3', folderId: 'grand-1');
+
+      when(() => folderRepo.findById('folder-1')).thenAnswer((_) async => userFolder);
+      when(() => folderRepo.findAll())
+          .thenAnswer((_) async => [userFolder, child, grandchild]);
+      when(() => noteRepo.findByFolderId('folder-1')).thenAnswer((_) async => []);
+      when(() => noteRepo.findByFolderId('child-1')).thenAnswer((_) async => []);
+      when(() => noteRepo.findByFolderId('grand-1')).thenAnswer((_) async => [grandNote]);
+
+      await useCase.execute('folder-1', DeleteFolderAction.deletePermanently);
+
+      verify(() => noteRepo.deleteAllInFolder('grand-1')).called(1);
+      verifyNever(() => noteRepo.moveAllToFolder(any(), any()));
+      verify(() => folderRepo.delete('grand-1')).called(1);
+      verify(() => folderRepo.delete('child-1')).called(1);
+      verify(() => folderRepo.delete('folder-1')).called(1);
+    });
   });
 }
