@@ -207,6 +207,7 @@ Riverpod providers sit between the UI and the domain layer. They hold state and 
 - `CreateFolder` — after the existing reserved-name check, must also check that no sibling folder (same `parentId`) has the same name (case-insensitive). Throws `ArgumentError('A folder with this name already exists here.')` if duplicate.
 - `RenameFolder` — same uniqueness check as `CreateFolder`: no sibling may share the new name.
 - `EditNote` — after resolving the final title (trim, default to "Untitled"), must check `findByFolderId(note.folderId)` for a note with the same title. If a duplicate is found, appends " (2)", " (3)", etc. until the title is unique.
+- `DeleteFolder` — must collect *all* descendant folders recursively (not only direct children) before applying the chosen action. For `moveToStash`, every note inside the target folder and every descendant subfolder is moved to Stash. For `deletePermanently`, every such note is deleted. After notes are handled, all descendant folders are deleted bottom-up, then the target folder itself is deleted.
 
 ---
 
