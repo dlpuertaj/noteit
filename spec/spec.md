@@ -163,9 +163,9 @@ Two system folders are created automatically on first app launch and always exis
 - Shows a context menu with: **Delete** and **Rename...**
 - Tapping Delete on a **folder:**
   - If the folder is empty (no direct notes and no notes in any subfolder): deletes immediately, no prompt.
-  - If the folder contains notes at any nesting level: the count shown in the prompt includes all notes inside the folder and all of its subfolders. Shows prompt — "This folder contains X notes. What do you want to do with them?" with two options:
-    - **Move to Stash** — moves all notes to the Stash folder, then deletes the folder.
-    - **Delete permanently** — deletes all notes and the folder permanently.
+  - If the folder contains notes at any nesting level: the count shown in the prompt includes all notes inside the folder and all of its subfolders (at any depth). Shows prompt — "This folder contains X notes. What do you want to do with them?" with two options:
+    - **Move to Stash** — moves every note inside the folder *and* inside any of its descendant subfolders (at any nesting level) to the Stash folder, then deletes the folder and all of its descendant subfolders.
+    - **Delete permanently** — deletes every note inside the folder *and* inside any of its descendant subfolders, then deletes the folder and all of its descendant subfolders permanently.
 - System folders (Inbox, Stash) must not show a Delete option on tap-hold.
 
 **Tap-hold (1 second) on a note:**
@@ -258,3 +258,4 @@ Note Editor
 | Note title is left empty | Title defaults to "Untitled" on auto-save. |
 | App is loading notes on startup | A centered app logo (Flutter's default `FlutterLogo` for now) is shown until the first note is ready. |
 | User changes max folder depth in Settings | The new limit applies immediately to folder creation without restarting the app. |
+| User deletes a folder whose subfolder (or deeper descendant) contains notes | The delete prompt is shown with the total descendant note count. The chosen action (Move to Stash / Delete permanently) applies to notes at every nesting level — none are missed. |
