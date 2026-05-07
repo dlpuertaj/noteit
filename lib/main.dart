@@ -12,7 +12,7 @@ class NotesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Notes',
+      title: 'noteIt',
       routerConfig: appRouter,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
