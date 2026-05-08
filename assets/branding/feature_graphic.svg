@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 500" width="1024" height="500">
+  <title>noteIt feature graphic</title>
+
+  <!-- Background -->
+  <rect width="1024" height="500" fill="#FAFAFA"/>
+
+  <!-- Icon mark — same as icon.svg, scaled to fit left section -->
+  <g transform="translate(22, 43) scale(0.62) translate(-266, -176)">
+    <path d="M 310 680 L 310 220 L 714 680 L 714 220"
+          fill="none"
+          stroke="#111827"
+          stroke-width="88"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <circle cx="310" cy="800" r="44" fill="#111827"/>
+    <line x1="600" y1="220" x2="828" y2="220"
+          stroke="#111827"
+          stroke-width="88"
+          stroke-linecap="round"/>
+  </g>
+
+  <!-- Vertical divider -->
+  <line x1="420" y1="60" x2="420" y2="440"
+        stroke="#E5E7EB"
+        stroke-width="1"/>
+
+  <!-- Wordmark -->
+  <text x="722" y="262"
+        font-family="'Book Antiqua', Palatino, serif"
+        font-size="110"
+        font-weight="400"
+        fill="#111827"
+        text-anchor="middle">noteIt</text>
+
+  <!-- Tagline -->
+  <text x="722" y="318"
+        font-family="'Book Antiqua', Palatino, serif"
+        font-size="26"
+        font-weight="400"
+        fill="#9CA3AF"
+        text-anchor="middle"
+        letter-spacing="4">simple · offline · yours</text>
+</svg>
