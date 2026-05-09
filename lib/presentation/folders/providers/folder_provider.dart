@@ -64,8 +64,8 @@ class FolderState {
 class FolderNotifier extends Notifier<FolderState> {
   @override
   FolderState build() {
-    ref.listen<int>(settingsProvider, (_, maxDepth) {
-      state = state.copyWith(maxFolderDepth: maxDepth);
+    ref.listen<SettingsState>(settingsProvider, (_, settings) {
+      state = state.copyWith(maxFolderDepth: settings.maxFolderDepth);
     });
     Future.microtask(_init);
     return const FolderState();
@@ -73,7 +73,7 @@ class FolderNotifier extends Notifier<FolderState> {
 
   Future<void> _init() async {
     final folders = await ref.read(_getFoldersProvider).execute();
-    final maxDepth = ref.read(settingsProvider);
+    final maxDepth = ref.read(settingsProvider).maxFolderDepth;
     state = FolderState(folders: folders, maxFolderDepth: maxDepth);
   }
 

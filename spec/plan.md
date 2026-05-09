@@ -193,7 +193,8 @@ Riverpod providers sit between the UI and the domain layer. They hold state and 
 
 **Widget notes:**
 - `NoteThreeDotMenu` — exposes callbacks for both `onDeleteNote` and `onMoveNote`.
-- `NoteEditingToolbar` — a thin row between the AppBar and the title field containing Undo and Redo buttons. Each button receives an `UndoHistoryController` (one per text field) and is disabled when the respective history is empty.
+- `NoteEditingToolbar` — a thin row between the AppBar and the title field containing Undo, Redo, Decrease Font, and Increase Font buttons. The Undo/Redo buttons each receive an `UndoHistoryController` and are disabled when history is empty. The font size buttons receive the current `bodyFontSize` from `settingsProvider` and callbacks to call `setBodyFontSize`; Decrease is disabled at 10, Increase at 32.
+- `NoteBodyField` — applies `bodyFontSize` from `settingsProvider` to its `TextStyle`. Re-renders immediately when the value changes.
 - `FolderItem` — accepts an `isSelected` boolean; highlights the full tile when selected. Draws a vertical hierarchy line on the left edge when it is a subfolder (depth > 1). Accepts a `totalNoteCount` integer that includes notes in all descendant subfolders — used for the delete-prompt count.
 - `FolderTree` — passes `selectedFolderId` down to each `FolderItem` so it can self-highlight. Computes `totalNoteCount` recursively for each folder including its subfolders before passing to `FolderItem`. Renders user-created folders first, then system folders (Inbox, Stash) at the bottom.
 - `SidePanelScreen` — calls `FocusManager.instance.primaryFocus?.unfocus()` when the panel opens and on every folder/note tap.
@@ -208,6 +209,7 @@ Riverpod providers sit between the UI and the domain layer. They hold state and 
 - `RenameFolder` — same uniqueness check as `CreateFolder`: no sibling may share the new name.
 - `EditNote` — after resolving the final title (trim, default to "Untitled"), must check `findByFolderId(note.folderId)` for a note with the same title. If a duplicate is found, appends " (2)", " (3)", etc. until the title is unique.
 - `DeleteFolder` — must collect *all* descendant folders recursively (not only direct children) before applying the chosen action. For `moveToStash`, every note inside the target folder and every descendant subfolder is moved to Stash. For `deletePermanently`, every such note is deleted. After notes are handled, all descendant folders are deleted bottom-up, then the target folder itself is deleted.
+- `SettingsNotifier` — state includes both `maxFolderDepth` and `bodyFontSize`. Exposes `setBodyFontSize(int value)` which clamps to [10, 32] and persists to the `settings` table. `AppDatabase` must add a `body_font_size` column (default 16) to the `settings` table via a schema migration.
 
 ---
 

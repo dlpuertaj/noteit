@@ -381,3 +381,37 @@ For each feature: write widget test (red) → implement provider → implement s
 - [x] **T-627** Run `flutter test test/models/folder/use_cases/delete_folder_test.dart` — all tests pass.
 - [x] **T-628** Run `flutter analyze` — zero errors and zero warnings.
 - [x] **T-629** Run `flutter test` — all tests pass.
+
+---
+
+## Phase 8 — Feature: Body Font Size
+
+### 8.1 Data layer
+
+- [x] **T-630** Add `body_font_size INTEGER NOT NULL DEFAULT 16` column to the `settings` table in `AppDatabase`. Implement as a schema migration (`onUpgrade`) so existing installs are updated without data loss. Update `AppDatabase` tests to assert the column exists and the seeded default value is 16.
+- [x] **T-631** Add `findBodyFontSize()` and `saveBodyFontSize(int)` methods to the database helper (or inline in `SettingsNotifier` via raw SQL). Update integration tests to cover read and write of the new column.
+
+### 8.2 Settings provider
+
+- [x] **T-632** Add `bodyFontSize` field to the settings state object. Update `SettingsNotifier._init()` to read `body_font_size` from the database. Add `setBodyFontSize(int value)` method that clamps to [10, 32], updates state immediately, and persists to the database.
+- [x] **T-633** Update widget test in `test/presentation/settings/settings_screen_test.dart` — add test cases: screen shows current `bodyFontSize`; increasing saves the new value; decreasing saves the new value; value is clamped to range 10–32.
+
+### 8.3 Settings screen
+
+- [x] **T-634** Add a Body font size selector row to `SettingsScreen` (same style as the max folder depth selector). Calls `settingsProvider.setBodyFontSize()` on change.
+
+### 8.4 Toolbar buttons
+
+- [x] **T-635** Add Decrease Font (`Icons.text_decrease`) and Increase Font (`Icons.text_increase`) `IconButton`s to `NoteEditingToolbar`, positioned next to the Undo/Redo buttons. Receive `bodyFontSize`, `onDecrease`, and `onIncrease` callbacks. Decrease is disabled when `bodyFontSize <= 10`; Increase is disabled when `bodyFontSize >= 32`.
+- [x] **T-636** Wire the new toolbar buttons in `NoteEditorScreen`: read `bodyFontSize` from `settingsProvider`, pass `onDecrease` → `setBodyFontSize(current - 2)`, `onIncrease` → `setBodyFontSize(current + 2)`.
+- [x] **T-637** Write widget test for the font size buttons in `NoteEditingToolbar` — test cases: Increase button is disabled at max (32); Decrease button is disabled at min (10); tapping Increase calls `onIncrease`; tapping Decrease calls `onDecrease`.
+
+### 8.5 Note body field
+
+- [x] **T-638** Update `NoteBodyField` to read `bodyFontSize` from `settingsProvider` and apply it to the `TextStyle` of the body `TextField`. Font size updates must re-render immediately without a restart.
+- [x] **T-639** Write widget test: changing `settingsProvider` `bodyFontSize` causes `NoteBodyField` to render with the updated font size.
+
+### 8.6 Regression check
+
+- [x] **T-640** Run `flutter analyze` — zero errors and zero warnings.
+- [x] **T-641** Run `flutter test` — all tests pass.

@@ -8,6 +8,7 @@ import 'package:notes/presentation/notes/widgets/note_body_field.dart';
 import 'package:notes/presentation/notes/widgets/note_editing_toolbar.dart';
 import 'package:notes/presentation/notes/widgets/note_three_dot_menu.dart';
 import 'package:notes/presentation/notes/widgets/note_title_field.dart';
+import 'package:notes/presentation/settings/providers/settings_provider.dart';
 
 class NoteEditorScreen extends ConsumerStatefulWidget {
   const NoteEditorScreen({super.key});
@@ -110,6 +111,7 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
   Widget build(BuildContext context) {
     ref.listen<NoteState>(noteProvider, (_, next) => _syncFromState(next));
     final isLoading = ref.watch(noteProvider).isLoading;
+    final bodyFontSize = ref.watch(settingsProvider).bodyFontSize;
 
     return Stack(
       children: [
@@ -159,6 +161,13 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                       activeUndoNotifier: _activeUndoNotifier,
                       onUndo: () => _activeUndoNotifier.value.undo(),
                       onRedo: () => _activeUndoNotifier.value.redo(),
+                      bodyFontSize: bodyFontSize,
+                      onDecreaseFontSize: () => ref
+                          .read(settingsProvider.notifier)
+                          .setBodyFontSize(bodyFontSize - 2),
+                      onIncreaseFontSize: () => ref
+                          .read(settingsProvider.notifier)
+                          .setBodyFontSize(bodyFontSize + 2),
                     ),
                     Expanded(
                       child: Padding(

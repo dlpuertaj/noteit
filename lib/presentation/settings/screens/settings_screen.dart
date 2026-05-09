@@ -8,7 +8,7 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final depth = ref.watch(settingsProvider);
+    final settings = ref.watch(settingsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -21,27 +21,55 @@ class SettingsScreen extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+        child: Column(
           children: [
-            const Expanded(child: Text('Maximum folder depth')),
-            IconButton(
-              tooltip: 'Decrease',
-              icon: const Icon(Icons.remove),
-              onPressed: depth > 1
-                  ? () => ref
-                      .read(settingsProvider.notifier)
-                      .setMaxFolderDepth(depth - 1)
-                  : null,
+            Row(
+              children: [
+                const Expanded(child: Text('Maximum folder depth')),
+                IconButton(
+                  tooltip: 'Decrease max depth',
+                  icon: const Icon(Icons.remove),
+                  onPressed: settings.maxFolderDepth > 1
+                      ? () => ref
+                          .read(settingsProvider.notifier)
+                          .setMaxFolderDepth(settings.maxFolderDepth - 1)
+                      : null,
+                ),
+                Text('${settings.maxFolderDepth}'),
+                IconButton(
+                  tooltip: 'Increase max depth',
+                  icon: const Icon(Icons.add),
+                  onPressed: settings.maxFolderDepth < 5
+                      ? () => ref
+                          .read(settingsProvider.notifier)
+                          .setMaxFolderDepth(settings.maxFolderDepth + 1)
+                      : null,
+                ),
+              ],
             ),
-            Text('$depth'),
-            IconButton(
-              tooltip: 'Increase',
-              icon: const Icon(Icons.add),
-              onPressed: depth < 5
-                  ? () => ref
-                      .read(settingsProvider.notifier)
-                      .setMaxFolderDepth(depth + 1)
-                  : null,
+            Row(
+              children: [
+                const Expanded(child: Text('Body font size')),
+                IconButton(
+                  tooltip: 'Decrease font size',
+                  icon: const Icon(Icons.remove),
+                  onPressed: settings.bodyFontSize > 10
+                      ? () => ref
+                          .read(settingsProvider.notifier)
+                          .setBodyFontSize(settings.bodyFontSize - 2)
+                      : null,
+                ),
+                Text('${settings.bodyFontSize}'),
+                IconButton(
+                  tooltip: 'Increase font size',
+                  icon: const Icon(Icons.add),
+                  onPressed: settings.bodyFontSize < 32
+                      ? () => ref
+                          .read(settingsProvider.notifier)
+                          .setBodyFontSize(settings.bodyFontSize + 2)
+                      : null,
+                ),
+              ],
             ),
           ],
         ),
