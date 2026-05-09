@@ -6,11 +6,17 @@ class NoteEditingToolbar extends StatelessWidget {
     required this.activeUndoNotifier,
     required this.onUndo,
     required this.onRedo,
+    required this.bodyFontSize,
+    required this.onDecreaseFontSize,
+    required this.onIncreaseFontSize,
   });
 
   final ValueNotifier<UndoHistoryController> activeUndoNotifier;
   final VoidCallback onUndo;
   final VoidCallback onRedo;
+  final int bodyFontSize;
+  final VoidCallback onDecreaseFontSize;
+  final VoidCallback onIncreaseFontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +37,16 @@ class NoteEditingToolbar extends StatelessWidget {
                   icon: const Icon(Icons.redo),
                   tooltip: 'Redo',
                   onPressed: value.canRedo ? onRedo : null,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.text_decrease),
+                  tooltip: 'Decrease font size',
+                  onPressed: bodyFontSize > 10 ? onDecreaseFontSize : null,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.text_increase),
+                  tooltip: 'Increase font size',
+                  onPressed: bodyFontSize < 32 ? onIncreaseFontSize : null,
                 ),
               ],
             );
