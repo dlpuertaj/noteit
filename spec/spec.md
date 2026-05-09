@@ -77,6 +77,7 @@ Two system folders are created automatically on first app launch and always exis
 | Field | Type | Description |
 |---|---|---|
 | `maxFolderDepth` | Integer | Maximum allowed nesting depth for user folders. Default: 2. Min: 1. Max: 5. |
+| `bodyFontSize` | Integer | Font size (in logical pixels) for the note body text. Default: 16. Min: 10. Max: 32. Step: 2. Does not affect the title field. |
 
 ---
 
@@ -130,6 +131,13 @@ Two system folders are created automatically on first app launch and always exis
 - Each field (title, body) maintains its own independent undo/redo history.
 - Buttons are visually disabled when there is nothing to undo or redo respectively.
 - On devices with a hardware keyboard, Ctrl+Z triggers Undo and Ctrl+Y triggers Redo.
+
+**Font size:**
+- The same toolbar row also contains a **Decrease Font** button and an **Increase Font** button, placed next to the Undo/Redo buttons.
+- Each tap changes the body font size by 2 logical pixels immediately — no save action required.
+- The Decrease Font button is disabled when the font size is already at the minimum (10). The Increase Font button is disabled at the maximum (32).
+- Font size changes apply globally (all notes) and persist across sessions via the settings store.
+- Only the note body text is affected; the title field font size is fixed.
 
 ---
 
@@ -210,13 +218,14 @@ Two system folders are created automatically on first app launch and always exis
 ### 3.5 Settings Screen
 
 - Navigated to from the Note Editor via the Settings button, located in the top bar alongside the Side Panel button.
-- Contains one setting:
+- Contains two settings:
 
 | Setting | Type | Default | Constraint |
 |---|---|---|---|
 | Maximum folder depth | Integer selector | 2 | Min: 1, Max: 5 |
+| Body font size | Integer selector | 16 | Min: 10, Max: 32, step: 2 |
 
-- Changing the max folder depth takes effect immediately without requiring an app restart.
+- Changing either setting takes effect immediately without requiring an app restart.
 - If the new max depth is lower than the current folder structure, existing folders that exceed the new limit are **not** automatically deleted — the limit only prevents new folders from being created beyond it.
 - A back button returns to the Note Editor.
 
@@ -259,3 +268,5 @@ Note Editor
 | App is loading notes on startup | A centered app logo (Flutter's default `FlutterLogo` for now) is shown until the first note is ready. |
 | User changes max folder depth in Settings | The new limit applies immediately to folder creation without restarting the app. |
 | User deletes a folder whose subfolder (or deeper descendant) contains notes | The delete prompt is shown with the total descendant note count. The chosen action (Move to Stash / Delete permanently) applies to notes at every nesting level — none are missed. |
+| User taps Decrease Font at minimum font size (10) | The Decrease Font button is disabled; no action occurs. |
+| User taps Increase Font at maximum font size (32) | The Increase Font button is disabled; no action occurs. |
