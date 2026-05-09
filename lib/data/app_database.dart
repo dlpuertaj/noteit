@@ -21,7 +21,20 @@ class AppDatabase {
 
   Future<Database> _open() async {
     final dbPath = path ?? await _productionPath();
-    return openDatabase(dbPath, version: 1, onCreate: _onCreate);
+    return openDatabase(
+      dbPath,
+      version: 2,
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
+    );
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute(
+        'ALTER TABLE settings ADD COLUMN body_font_size INTEGER NOT NULL DEFAULT 16',
+      );
+    }
   }
 
   Future<String> _productionPath() async {
@@ -54,7 +67,8 @@ class AppDatabase {
 
     await db.execute('''
       CREATE TABLE settings (
-        max_folder_depth INTEGER NOT NULL
+        max_folder_depth INTEGER NOT NULL,
+        body_font_size INTEGER NOT NULL
       )
     ''');
 
@@ -78,7 +92,10 @@ class AppDatabase {
       'created_at': now,
     });
 
-    await db.insert('settings', {'max_folder_depth': kDefaultMaxFolderDepth});
+    await db.insert('settings', {
+      'max_folder_depth': kDefaultMaxFolderDepth,
+      'body_font_size': kDefaultBodyFontSize,
+    });
   }
 }
 

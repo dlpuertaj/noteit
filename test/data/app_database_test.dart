@@ -66,10 +66,23 @@ void main() {
       expect(rows.first['depth'], 1);
     });
 
+    test('settings table has body_font_size column', () async {
+      final result = await (await db.database)
+          .rawQuery('PRAGMA table_info(settings)');
+      final columns = result.map((r) => r['name'] as String).toSet();
+      expect(columns, contains('body_font_size'));
+    });
+
     test('seeds settings row with default max_folder_depth of 2', () async {
       final rows = await (await db.database).query('settings');
       expect(rows, hasLength(1));
       expect(rows.first['max_folder_depth'], kDefaultMaxFolderDepth);
+    });
+
+    test('seeds settings row with default body_font_size of 16', () async {
+      final rows = await (await db.database).query('settings');
+      expect(rows, hasLength(1));
+      expect(rows.first['body_font_size'], kDefaultBodyFontSize);
     });
 
     test('re-opening the same in-memory db does not duplicate system data',
