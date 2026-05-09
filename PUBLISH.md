@@ -23,7 +23,7 @@ Mark each item `[x]` as it is completed. **You** = action only you can take (Pla
 Source SVGs live in `assets/branding/`. Convert them to PNG at the listed sizes (Inkscape, ImageMagick, or any online SVG→PNG converter — flatten transparency for the Play Store icon).
 
 - [x] 512×512 Play Store icon (PNG, no alpha) — `assets/branding/icon.png`
-- [ ] **You** — 1024×500 feature graphic (PNG/JPG, no alpha) — from `assets/branding/feature_graphic.svg`
+- [x] **You** — 1024×500 feature graphic (PNG/JPG, no alpha) — from `assets/branding/feature_graphic.svg`
 - [x] 1024×1024 adaptive icon foreground (PNG, transparent) — `assets/branding/icon_foreground.png`
 - [x] Adaptive icon background — solid hex `#FAFAFA` (configured in `flutter_launcher_icons.yaml`)
 - [x] Legacy fallback icon — generated from `assets/branding/icon.png`
