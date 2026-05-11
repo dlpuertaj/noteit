@@ -227,6 +227,7 @@ Two system folders are created automatically on first app launch and always exis
 
 - Changing either setting takes effect immediately without requiring an app restart.
 - If the new max depth is lower than the current folder structure, existing folders that exceed the new limit are **not** automatically deleted — the limit only prevents new folders from being created beyond it.
+- Below the settings, the screen shows a **Privacy Policy** link. Tapping it opens the privacy policy URL in the device's default browser.
 - A back button returns to the Note Editor.
 
 ---

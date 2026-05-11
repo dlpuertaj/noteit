@@ -415,3 +415,22 @@ For each feature: write widget test (red) → implement provider → implement s
 
 - [x] **T-640** Run `flutter analyze` — zero errors and zero warnings.
 - [x] **T-641** Run `flutter test` — all tests pass.
+
+---
+
+## Phase 9 — Privacy Policy Link
+
+### 9.1 Dependency
+
+- [ ] **T-700** Add `url_launcher ^6.3.2` to dependencies in `pubspec.yaml`. Run `flutter pub get`.
+- [ ] **T-701** Add `kPrivacyPolicyUrl` constant to `lib/utils/constants.dart`.
+
+### 9.2 Settings screen
+
+- [ ] **T-702** Add a Privacy Policy `TextButton` to `SettingsScreen` below the two setting rows. Tapping it calls `launchUrl(Uri.parse(kPrivacyPolicyUrl), mode: LaunchMode.externalApplication)`.
+- [ ] **T-703** Write widget test: tapping the Privacy Policy button calls `launchUrl` with the correct URL. Use a mock/fake for `url_launcher` or verify the button is present and tappable.
+
+### 9.3 Regression check
+
+- [ ] **T-704** Run `flutter analyze` — zero errors and zero warnings.
+- [ ] **T-705** Run `flutter test` — all tests pass.

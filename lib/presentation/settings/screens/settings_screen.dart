@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:notes/presentation/settings/providers/settings_provider.dart';
+import 'package:notes/utils/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -70,6 +72,13 @@ class SettingsScreen extends ConsumerWidget {
                       : null,
                 ),
               ],
+            ),
+            TextButton(
+              onPressed: () => launchUrl(
+                Uri.parse(kPrivacyPolicyUrl),
+                mode: LaunchMode.externalApplication,
+              ),
+              child: const Text('Privacy Policy'),
             ),
           ],
         ),
