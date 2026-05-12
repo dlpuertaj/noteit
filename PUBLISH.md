@@ -46,14 +46,14 @@ Source SVGs live in `assets/branding/`. Convert them to PNG at the listed sizes 
 - [x] `signingConfigs.release` block added to `build.gradle.kts` (loads `key.properties` if present, falls back to debug)
 - [x] `key.properties` and `*.jks` confirmed gitignored
 - [x] **You** — Generate `noteit-upload.jks` with `keytool` (see `PUBLISH.md` step in chat)
-- [ ] **You** — Back up `noteit-upload.jks` and its passwords off-machine
+- [x] **You** — Back up `noteit-upload.jks` and its passwords off-machine
 - [x] **You** — Create `android/key.properties` with `storePassword`, `keyPassword`, `keyAlias=upload`, `storeFile=noteit-upload.jks`
 - [x] **You** — Run `flutter build appbundle --release` and confirm `app-release.aab` is produced
 - [x] **You** — Verify signing certificate via `keytool -printcert -jarfile <path>` (must NOT be debug cert)
 
 ## 5. Privacy & compliance
 
-- [x] Privacy policy URL ready
+- [x] Privacy policy URL ready — https://gist.github.com/dlpuertaj/da2b31c5e13eba84dc5cf11c2b870e31
 - [ ] **You** — Paste privacy policy URL into Play Console store listing
 - [ ] **You** — Complete Play Console **Data safety** form (declare: no data collected, no data shared, all storage on-device)
 - [ ] **You** — Complete Play Console **Content rating** questionnaire

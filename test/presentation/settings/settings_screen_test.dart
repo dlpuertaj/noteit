@@ -182,6 +182,14 @@ void main() {
 
   // --- Navigation ---
 
+  testWidgets('Privacy Policy button is visible on the settings screen',
+      (tester) async {
+    await tester.pumpWidget(_buildApp());
+    await tester.pump();
+
+    expect(find.text('Privacy Policy'), findsOneWidget);
+  });
+
   testWidgets('back button navigates back to Note Editor', (tester) async {
     final router = GoRouter(
       initialLocation: '/settings',

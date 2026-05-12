@@ -18,6 +18,7 @@
 | `share_plus` | ^13.1.0 | Android share sheet for export |
 | `printing` | ^5.14.3 | Print dialog for export |
 | `uuid` | ^4.5.3 | Generating unique IDs for notes and folders |
+| `url_launcher` | ^6.3.2 | Opening the privacy policy URL in the device browser |
 
 **Dev dependencies:**
 
@@ -199,6 +200,7 @@ Riverpod providers sit between the UI and the domain layer. They hold state and 
 - `FolderTree` — passes `selectedFolderId` down to each `FolderItem` so it can self-highlight. Computes `totalNoteCount` recursively for each folder including its subfolders before passing to `FolderItem`. Renders user-created folders first, then system folders (Inbox, Stash) at the bottom.
 - `SidePanelScreen` — calls `FocusManager.instance.primaryFocus?.unfocus()` when the panel opens and on every folder/note tap.
 - `NoteEditorScreen` — shows a centered `FlutterLogo` when `noteState.isLoading == true` (i.e. DB is still loading). Once a note is ready, renders the normal editor layout. The `FlutterLogo` is a placeholder for the eventual real app logo.
+- `SettingsScreen` — below the two setting rows, renders a **Privacy Policy** `TextButton` that calls `url_launcher`'s `launchUrl` with the policy URL. The URL is defined as a constant in `utils/constants.dart`.
 
 **Provider notes:**
 - `folder_provider` — `FolderNotifier.build()` must call `ref.listen(settingsProvider, ...)` so that `state.maxFolderDepth` updates in real time when the user changes the setting. The direct DB read for settings in `_init()` is replaced by `ref.read(settingsProvider)`.
